@@ -8,10 +8,14 @@
 	================================================================
 */
 // datos para establecer la conexion con la base de mysql.
-$con = mysqli_connect('localhost','medrano','medrano') or die ('Ha fallado la conexi&oacute;n: '.mysqli_error());
-mysqli_select_db($con, 'publications') or die ('Error al seleccionar la base de datos: '. mysqli_error());
-//$con = mysqli_connect('localhost','root','root') or die ('Ha fallado la conexi&oacute;n: '.mysqli_error());
-// Cheque la versión del Php
+define("SERVERNAME", "localhost");
+define("USERNAME", "medrano");
+define("PASSWORD", "medrano");
+define("DB_NAME", "publications");
+
+$con = mysqli_connect(SERVERNAME, USERNAME, PASSWORD) or die ('Ha fallado la conexión: '.mysqli_error());
+mysqli_select_db($con, DB_NAME) or die ('Error al seleccionar la base de datos: '. mysqli_error());
+
 if (version_compare(PHP_VERSION, "5.3.0") < 0) {
    die("PHP >= 5.3.0 required");
 }

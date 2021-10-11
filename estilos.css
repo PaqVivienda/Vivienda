@@ -1,0 +1,1151 @@
+@charset "utf-8";
+/* CSS Document */
+
+#art-main
+{
+   margin:0 auto;
+   font-size: 13px;
+   font-family: Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
+   position: relative;
+   width: 100%;
+   min-height: 100%;
+   left: 0;
+   cursor:default;
+}
+
+#main-header {
+background: #000387;
+height: 77px;
+width: 100%; /* hacemos que la cabecera ocupe el ancho completo left: 0; /* Posicionamos la cabecera al lado izquierdo */
+top: 0; /* Posicionamos la cabecera pegada arriba */
+left:0;
+position:relative;
+/* Sombra en los bordes */
+box-shadow: 8px 8px 10px #999;
+-webkit-box-shadow: 8px 8px 10px #999;
+ -moz-box-shadow: 8px 8px 10px #999;
+filter: shadow(color=#999999, direction=135, strength=2);
+}
+
+#herramienta {
+	top:18px;
+	width:65%;
+	padding: 5px 30px;
+	background:#d0cfcf;
+	margin: 0 auto;
+	position:relative;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#cabecera {
+	width:80%;
+	padding: 5px 30px;
+	background:#d0cfcf;
+	margin: 0 auto;
+	position:relative;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#opciones {
+	padding: 5px 30px;
+	background:#d0cfcf;
+	margin: 0 auto;
+	position:relative;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+.texto-encima{
+    position: absolute;
+    top: 10px;
+    left: 755px;
+	font-size: 16px;
+    font-family: Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
+	color:#000;
+}
+
+#wrap {border:1px solid #d7d7d7;
+width:97%;
+top:30px;
+margin:0 auto;
+background:#f2f2f2;
+position: relative;
+/* Bordes */
+border-radius: 16px 16px 16px 16px;
+-moz-border-radius: 16px 16px 16px 16px;
+-webkit-border-radius: 16px 16px 16px 16px;
+border: 1px solid #b8b8b8;
+/* Sombra en los bordes */
+box-shadow: 8px 8px 10px #999;
+-webkit-box-shadow: 8px 8px 10px #999;
+-moz-box-shadow: 8px 8px 10px #999;
+filter: shadow(color=#999999, direction=135, strength=2);
+}
+
+body {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:18px;
+	line-height:17px;
+	color:#fff;
+	background:#0a6a5b url(images/bg.jpg)
+}
+
+/* Menu */
+header {
+	width:90%;
+	max-width:auto;
+	margin:auto;
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+nav {
+	background:#d0cfcf;
+	margin-top:1px;
+	position:relative;
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+nav ul {
+	list-style:none;
+	padding:0;
+	margin:0;
+	overflow:hidden;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+nav > ul > li {
+	float:left;
+}
+
+nav ul li a {
+	text-decoration:none;
+	font-family:Comic Sans MS,arial,verdana;
+	font-size:15px;
+	color:#5b0000;
+	display:block;
+	padding:10px 20px;
+}
+
+nav ul li a:hover {
+	background:#3669A3;
+	color:#fff;
+}
+
+nav > ul > li:hover div {
+	display:table;
+}
+
+nav > ul > li:hover diva {
+	display:table;
+}
+
+/*Submenu*/
+nav ul li div {
+	width:337px;
+	margin:0;
+	padding:0;
+	position: absolute;
+	background:#ccc;
+	box-sizing:border-box;
+	display:none; 
+	/*display:table;*/
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+nav ul li div ul {
+	width:20%;
+	display:table-cell;
+	border-right:1px solid rgba(255,255,255,.5);
+	box-sizing:border-box;
+}
+
+nav ul li div ul:last-child {
+	border:none;
+}
+
+nav ul li div ul .titulo {
+	background:#9b9b9b;
+	color:#fff;
+}
+
+nav ul li div ul .titulo a {
+	color:#fff;
+	padding:10px 20px;
+}
+
+/* Fin del Menu */
+
+/* Otro Menu */
+#menu{margin:0;padding:0;float:left;list-style:none;}
+#menu li{position:relative;padding:3px 8px;margin:0 1px;}
+#menu ul{display:none;}
+#menu li:hover ul,#menu li ul:hover{display:block;position:absolute;list-style:none;}
+
+.titulo.azul {background:#3498db;}
+.titulo.verde {background:#27ae60;}
+.titulo.naranja {background:#e67e22;}
+.titulo.rojo {background:#930202; color:#000;}
+/*linear-gradient( 180deg, #b30303, #530000); ">180deg
+linear-gradient( 90deg, #b30303, #530000); ">90deg
+linear-gradient( 75deg, #b30303, #530000); ">75deg
+linear-gradient( 45deg, #b30303, #530000); ">45deg*/
+.titulo.degradado {background: linear-gradient( 90deg, #b30303, #530000);90deg; color:#000;}
+
+nav ul li div ul .titulo a:hover {
+	background:none;
+}
+
+nav ul li div ul li a {
+	color:#000;
+}
+
+a:link   
+{   
+ text-decoration:none;   
+} 
+
+#footer-login {
+   position:fixed;
+   right: 10px;
+   bottom: 20px;
+   height: 45x;
+   font-size : 14px;
+   font-family: Verdana,Arial,Helvetica,sans-serif;
+   font-weight: bold;
+}
+
+#footer-login a {
+   color: #000;
+}
+/* The Nivo Slider styles */
+.nivoSlider {
+	position:relative;
+}
+.nivoSlider img {
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+/* If an image is wrapped in a link */
+.nivoSlider a.nivo-imageLink {
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	border:0;
+	padding:0;
+	margin:0;
+	z-index:60;
+	display:none;
+}
+/* The slices in the Slider */
+.nivo-slice {
+	display:block;
+	position:absolute;
+	z-index:50;
+	height:100%;
+}
+/* Caption styles */
+.nivo-caption {
+	position:absolute;
+	left:0px;
+	bottom:0px;
+	background:#000;
+	color:#fff;
+	opacity:0.8; /* Overridden by captionOpacity setting */
+	width:100%;
+	z-index:89;
+}
+.nivo-caption p {
+	padding:5px;
+	margin:0;
+}
+.nivo-caption a {
+	display:inline !important;
+}
+.nivo-html-caption {
+    display:none;
+}
+/* Direction nav styles (e.g. Next & Prev) */
+.nivo-directionNav a {
+	position:absolute;
+	top:45%;
+	z-index:99;
+	cursor:pointer;
+}
+.nivo-prevNav {
+	left:0px;
+}
+.nivo-nextNav {
+	right:0px;
+}
+/* Control nav styles (e.g. 1,2,3...) */
+.nivo-controlNav a {
+	position:relative;
+	z-index:99;
+	cursor:pointer;
+}
+.nivo-controlNav a.active {
+	font-weight:bold;
+}
+
+.grid_7 div.module div.module-body  { padding: 20px 2.75% 20px  2.75%; float: left; width: 94.5%; }
+
+/* -------------------- Dashboard -------------------- */
+a.dashboard-module, 
+a.dashboard-module:visited { 
+	width: 100px; 
+	height: 100px; 
+	display: block; 
+	float: left; 
+	background: url(pics/opciones.png) top left no-repeat; 
+	margin: 0 8px 8px 0;  
+	text-align: center; 
+	color: #444444;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+	}
+a.dashboard-module:hover, 
+a.dashboard-module:active { 
+	background-position: bottom left; 
+	text-decoration: none; 
+	color:#e4e3e3; 
+	}
+
+a.dashboard-module img { 
+	margin-top: 10px; 
+	}
+	
+a.dashboard-module span {
+	margin-top: 5px; 
+	display: block; 
+	color:#a62d2d;
+	text-align:inherit;
+	font-size: 0.875em;
+	}
+
+/* -------------------- Dashboard -------------------- */
+a.dashboard-mod, 
+a.dashboard-mod:visited {
+	width: 90px; 
+	height: 37px; 
+	display: block; 
+	float:right; 
+	background: url(pics/opciones.png) top left no-repeat; 
+	margin: 0 8px 8px 0;  
+	text-align: center; 
+	color: #444444;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+	}
+a.dashboard-mod:hover, 
+a.dashboard-mod:active {
+	background:#CCC;
+	background-position: bottom left; 
+	text-decoration: none; 
+	color:#FFF;
+	}
+
+a.dashboard-mod span { 
+	margin-top: 8px;
+	font-family:Verdana, Geneva, sans-serif;
+	display: block; 
+	color:#a62d2d;
+	text-align:inherit;
+	font-size: 1.275em;
+	}
+	
+/* Logo */
+.logotipo {
+	width: 100px; 
+	height: 100px; 
+	display: block;
+	margin:0 auto;
+	margin-top: 70px;
+	background: url(img/logo_Aphp.jpg) top left no-repeat;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 56px 56px 56px 56px;
+	-moz-border-radius: 56px 56px 56px 56px;
+	-webkit-border-radius: 56px 56px 56px 56px;
+	border: 1px solid #b8b8b8;
+}
+/* Cuadro del centro */
+.cuadros {
+	/* dimensiones del cuadro */
+	width:50%;
+	height:50%;
+	display:block;
+	margin:0 auto;
+	margin-top: 25px;
+	background:#e9e9e9;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border: 1px solid #b8b8b8;
+}
+.cuadros p{
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:14px;
+	line-height:18pt;
+	text-align:justify;
+	color:#000;
+	text-indent: 0.2cm;
+	margin-left:0.2cm;
+	margin-right:0.2cm;
+	padding:0.1px 0 0.1px 0;
+}
+
+.step{
+	margin:20px 0 15px;
+	text-align:left;padding:0;
+	height:36px;font-size:14px;
+	line-height:33px;
+	vertical-align:middle;
+	display:inline-block;
+	vertical-align:middle;
+	margin-right:15px;
+	}
+a.btn {
+  width: 250px;
+  padding: 10px 25px 10px 25px;
+  font-family:Verdana, Geneva, sans-serif;
+  font-size: 18px;
+  text-decoration: none;
+  color: #000000;
+  background-color: #f2f2f2;
+  text-shadow: -1px -1px 2px #d0d0d0;
+  border: 1px solid #cfcece;
+  border-radius: 9px;
+  -moz-border-radius: 9px;
+  -webkit-border-radius: 9px;
+  background: -moz-linear-gradient(#f2f2f2, #d6d6d6 35%, #c8c8c8);
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #f2f2f2),color-stop(.35, #dfdede),color-stop(1, #d3d1d1));
+}
+
+a.btn:hover {
+  background-color: #b4b3b3;
+  text-shadow: -1px -1px 2px #b4b3b3;
+  border: 1px solid #0f2557;
+  border-radius: 9px;
+  -moz-border-radius: 9px;
+  -webkit-border-radius: 9px;
+  background: -moz-linear-gradient(#c6c6c6, #bfbebe 75%, #b4b3b3);
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0, #dedbdb),color-stop(.75, #cfcdcd),color-stop(1, #c0bfbf));
+}
+.fondo {
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+}
+.alinear_izquierda {
+	margin-left:1.45cm;
+}
+.alinear_derecha {
+	margin-right:1.5cm;
+}
+/* Input de Accesos */
+input{
+	padding: 5px 30px;
+	color: #000387;
+	background:#e5e5e5;
+	margin: 0 auto;
+	position:relative;
+}
+
+input#codigo {
+    left: 5px;
+    top: 15px;;
+	width: 100px;
+	height: 20px;
+	color: #000387;
+}
+
+input#desc {
+    left: 5px;
+    top: 15px;;
+	width: 700px;
+	height: 20px;
+}
+
+input.long {
+    left: 5px;
+    top: 0px;;
+	width: 18px;
+	height: 20px;
+}
+
+input.fech {
+    left: 5px;
+    top: 15px;;
+	width: 80px;
+	height: 20px;
+}
+
+ 
+input#usuario{
+    background:#ffc url(/img/username.png) no-repeat 0 2px; /*probar con #ddf.
+                                                                Para mover arriba-abajo la imagen 'jugar' con 2px, 5px */
+    /*Para que el texto dentro del input se mueva*/
+    padding-left: 25px; /*Sirve para darle espacio ala imagen, probar con 30px 10px y ver comportamiento*/
+}
+ 
+input#password{
+    background:#ffc url(/img/pass.png) no-repeat 0 5px;
+    padding-left: 25px;
+ 
+}
+
+input#username{
+    background:#ffc url(/img/username.png) no-repeat 0 5px;
+    padding-left: 25px;
+ 
+}
+input#nombre{
+    background:#ffc url(/img/nomuse.png) no-repeat 0 5px;
+    padding-left: 25px;
+ 
+}
+input#pass{
+    background:#ffc url(/img/pass.png) no-repeat 0 5px;
+    padding-left: 25px;
+ 
+}
+input#dep{
+    background:#ffc url(/img/dep.png) no-repeat 0 5px;
+    padding-left: 25px;
+ 
+}
+input#email{
+    background:#ffc url(/img/email.png) no-repeat 0 5px;
+    padding-left: 25px;
+ 
+}
+input#perfil{
+    background:#ffc url(/img/perfil.png) no-repeat 0 5px;
+    padding-left: 25px;
+ 
+}
+input#fecha{
+    background:#ffc url(/img/fecha.png) no-repeat 0 5px;
+    padding-left: 25px;
+ 
+}
+input[type="file"]{background:#fe0;width:300px;}
+
+input#boton{
+	width: 80px;
+}
+
+input#titulo {
+    left: 5px;
+    top: 0px;;
+	width: 300px;
+	height: 20px;
+}
+
+input#ttsim {
+    left: 0px;
+    top: 0px;;
+	width: 18px;
+	height: 20px;
+}
+
+input#pn {
+    left: 5px;
+    top: 0px;;
+	width: 60px;
+	height: 20px;
+}
+
+input#vr {
+    left: 5px;
+    top: 0px;;
+	width: 20px;
+	height: 20px;
+}
+
+input#mr {
+    left: 5px;
+    top: 0px;;
+	width: 2px;
+	height: 10px;
+}
+
+input#archivos {
+    left: 5px;
+    top: 0px;;
+	width: 100px;
+	height: 20px;
+}
+
+#envoltura {border:1px solid #d7d7d7;
+width:600px;
+height:auto;
+top:16px;
+margin:0 auto;
+background:#f2f2f2;
+position: relative;
+/* Bordes */
+border-radius: 16px 16px 16px 16px;
+-moz-border-radius: 16px 16px 16px 16px;
+-webkit-border-radius: 16px 16px 16px 16px;
+border: 1px solid #b8b8b8;
+/* Sombra en los bordes */
+box-shadow: 8px 8px 10px #999;
+-webkit-box-shadow: 8px 8px 10px #999;
+-moz-box-shadow: 8px 8px 10px #999;
+filter: shadow(color=#999999, direction=135, strength=2);
+}
+/* Selecciones */
+#sel_iz{
+    /*border: 1px solid #999; No usar esta línea y dejar box-shadow hace efecto de profundidad*/
+	background:#d0cfcf;
+	left: 5px;
+    top: 15px;;
+	color: #000387;
+    border-radius:5px; /*probar con 10px se hacen ovalados los inputs*/
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,.8);
+    font:bold 12px Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 30px;
+    width: 180px;
+	margin: 0 8px;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#sel_pint{
+    /*border: 1px solid #999; No usar esta línea y dejar box-shadow hace efecto de profundidad*/
+	background:#d0cfcf;
+	left: 2px;
+    top: 15px;;
+	color: #000387;
+    border-radius:5px; /*probar con 10px se hacen ovalados los inputs*/
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,.8);
+    font:bold 12px Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 10px;
+    width: 130px;
+	margin: 0 8px;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#sel_proy{
+    /*border: 1px solid #999; No usar esta línea y dejar box-shadow hace efecto de profundidad*/
+	background:#d0cfcf;
+	left: 2px;
+    top: 15px;;
+	color: #000387;
+    border-radius:5px; /*probar con 10px se hacen ovalados los inputs*/
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,.8);
+    font:bold 12px Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 10px;
+    width: 350px;
+	margin: 0 8px;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#sel_pared{
+    /*border: 1px solid #999; No usar esta línea y dejar box-shadow hace efecto de profundidad*/
+	background:#d0cfcf;
+	left: 2px;
+    top: 15px;;
+	color: #000387;
+    border-radius:5px; /*probar con 10px se hacen ovalados los inputs*/
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,.8);
+    font:bold 12px Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 10px;
+    width: 280px;
+	margin: 0 8px;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#sel_techo{
+    /*border: 1px solid #999; No usar esta línea y dejar box-shadow hace efecto de profundidad*/
+	background:#d0cfcf;
+	left: 2px;
+    top: 15px;;
+	color: #000387;
+    border-radius:5px; /*probar con 10px se hacen ovalados los inputs*/
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,.8);
+    font:bold 12px Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 10px;
+    width: 160px;
+	margin: 0 8px;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#sel_teinc{
+    /*border: 1px solid #999; No usar esta línea y dejar box-shadow hace efecto de profundidad*/
+	background:#d0cfcf;
+	left: 2px;
+    top: 15px;;
+	color: #000387;
+    border-radius:5px; /*probar con 10px se hacen ovalados los inputs*/
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,.8);
+    font:bold 12px Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 10px;
+    width: 450px;
+	margin: 0 8px;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#sel_tablaimp{
+    /*border: 1px solid #999; No usar esta línea y dejar box-shadow hace efecto de profundidad*/
+	background:#d0cfcf;
+	left: 2px;
+    top: 15px;;
+	color: #000387;
+    border-radius:5px; /*probar con 10px se hacen ovalados los inputs*/
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,.8);
+    font:bold 12px Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 10px;
+    width: 130px;
+	margin: 0 8px;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#sel_cm{
+    /*border: 1px solid #999; No usar esta línea y dejar box-shadow hace efecto de profundidad*/
+	background:#d0cfcf;
+	left: 2px;
+    top: 15px;;
+	color: #000387;
+    border-radius:5px; /*probar con 10px se hacen ovalados los inputs*/
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,.8);
+    font:bold 12px Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 10px;
+    width: 110px;
+	margin: 0 8px;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#sel_av{
+    /*border: 1px solid #999; No usar esta línea y dejar box-shadow hace efecto de profundidad*/
+	background:#d0cfcf;
+	left: 2px;
+    top: 15px;;
+	color: #000387;
+    border-radius:5px; /*probar con 10px se hacen ovalados los inputs*/
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,.8);
+    font:bold 12px Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 10px;
+    width: 180px;
+	margin: 0 8px;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+@-webkit-keyframes girando {
+  from { -webkit-transform: rotateX(0deg);    }
+  to   { -webkit-transform: rotateX(-360deg); }
+}
+#contenedor {
+   /*margin: 30px auto;*/
+   -webkit-perspective: 1000px;
+}
+
+#girando {
+   -webkit-animation-name: girando;
+   -webkit-animation-timing-function: 6s;
+   -webkit-animation-iteration-count: 2;
+   -webkit-animation-duration: 2s;
+   -webkit-transform-style: preserve-3d;
+}
+
+  @-webkit-keyframes girando {
+  from { -webkit-transform: rotateX(0deg);    }
+  to   { -webkit-transform: rotateX(-360deg); }
+}
+#contenedor {
+   /*margin: 30px auto;*/
+   -webkit-perspective: 1000px;
+}
+
+#girando {
+   -webkit-animation-name: girando;
+   -webkit-animation-timing-function: 6s;
+   -webkit-animation-iteration-count: 2;
+   -webkit-animation-duration: 2s;
+   -webkit-transform-style: preserve-3d;
+}
+
+#divcenter {
+	padding-top: 12px;
+}
+
+.derecha {
+	left: 50px;
+}
+
+table {
+  margin: 0 auto;
+  padding: 0 auto;
+}
+
+/* Acceso a otro Programa */
+.opciones_a{
+	padding: 5px 30px;
+	color: #000387;
+	background:#d0cfcf;
+	margin: 0 auto;
+	position:relative;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+.op {
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#license {
+   width: 520px;
+   margin: 20px auto;
+}
+.radio {
+   width:20px;
+   height:20px;
+   /* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+.chec {
+   width:20px;
+   height:20px;
+}
+
+#img-contenedor img {
+-webkit-transition:all .9s ease; /* Safari y Chrome */
+-moz-transition:all .9s ease; /* Firefox */
+-o-transition:all .9s ease; /* IE 9 */
+-ms-transition:all .9s ease; /* Opera */
+width:100%;
+}
+#img-contenedor:hover img {
+-webkit-transform:scale(1.25);
+-moz-transform:scale(1.25);
+-ms-transform:scale(1.25);
+-o-transform:scale(1.25);
+transform:scale(1.25);
+}
+#img-contenedor {/*Ancho y altura son modificables al requerimiento de cada uno*/
+width:300px;
+height:250px;
+overflow:hidden;
+}
+
+.sel_mes{
+    /*border: 1px solid #999; No usar esta línea y dejar box-shadow hace efecto de profundidad*/
+	background:#d0cfcf;
+	left: 2px;
+    top: 15px;;
+	color: #000387;
+    border-radius:5px; /*probar con 10px se hacen ovalados los inputs*/
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,.8);
+    font:bold 12px Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 10px;
+    width: 300px;
+	margin: 0 8px;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#sombra {
+	border-radius: 200px 200px 200px 200px;
+	-moz-border-radius: 200px 200px 200px 200px;
+	-webkit-border-radius: 200px 200px 200px 200px;
+	border: 0px solid #949494;
+	/* Sombra */
+	box-shadow: 5px 5px 5px #949494;
+	border-radius: 200x;
+}
+
+#forma_int {border:1px solid #d7d7d7;
+width:20%;
+top:5px;
+margin:0 auto;
+background:#f2f2f2;
+position: relative;
+/* Bordes */
+border-radius: 16px 16px 16px 16px;
+-moz-border-radius: 16px 16px 16px 16px;
+-webkit-border-radius: 16px 16px 16px 16px;
+border: 1px solid #b8b8b8;
+/* Sombra en los bordes */
+box-shadow: 8px 8px 10px #999;
+-webkit-box-shadow: 8px 8px 10px #999;
+-moz-box-shadow: 8px 8px 10px #999;
+filter: shadow(color=#999999, direction=135, strength=2);
+}
+
+#forma_par {border:1px solid #d7d7d7;
+width:30%;
+top:5px;
+margin:0 auto;
+background:#f2f2f2;
+position: relative;
+/* Bordes */
+border-radius: 16px 16px 16px 16px;
+-moz-border-radius: 16px 16px 16px 16px;
+-webkit-border-radius: 16px 16px 16px 16px;
+border: 1px solid #b8b8b8;
+/* Sombra en los bordes */
+box-shadow: 8px 8px 10px #999;
+-webkit-box-shadow: 8px 8px 10px #999;
+-moz-box-shadow: 8px 8px 10px #999;
+filter: shadow(color=#999999, direction=135, strength=2);
+}
+
+#sel_puertas{
+    /*border: 1px solid #999; No usar esta línea y dejar box-shadow hace efecto de profundidad*/
+	background:#d0cfcf;
+	left: 2px;
+    top: 15px;;
+	color: #000387;
+    border-radius:5px; /*probar con 10px se hacen ovalados los inputs*/
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,.8);
+    font:bold 12px Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 10px;
+    width: 150px;
+	margin: 0 8px;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}
+
+#sel_ventanas{
+    /*border: 1px solid #999; No usar esta línea y dejar box-shadow hace efecto de profundidad*/
+	background:#d0cfcf;
+	left: 2px;
+    top: 15px;;
+	color: #000387;
+    border-radius:5px; /*probar con 10px se hacen ovalados los inputs*/
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,.8);
+    font:bold 12px Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px 10px;
+    width: 150px;
+	margin: 0 8px;
+	/* Sombra en los bordes */
+	box-shadow: 8px 8px 10px #999;
+	-webkit-box-shadow: 8px 8px 10px #999;
+	-moz-box-shadow: 8px 8px 10px #999;
+	filter: shadow(color=#999999, direction=135, strength=2);
+	/* Bordes */
+	border-radius: 16px 16px 16px 16px;
+	-moz-border-radius: 16px 16px 16px 16px;
+	-webkit-border-radius: 16px 16px 16px 16px;
+	border: 1px solid #b8b8b8;
+}

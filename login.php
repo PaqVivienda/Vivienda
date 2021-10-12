@@ -1,5 +1,4 @@
 <?php session_start();
-echo "<p>ya aqui hay un error. </p>";
     //datos para establecer la conexion con la base de mysqli.
 	$con = mysqli_connect('localhost','medrano','medrano') or die('Ha fallado la conexi&oacute;n: '.mysqli_error());
 	echo "<p>Otro error.</p>";

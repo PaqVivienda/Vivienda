@@ -29,8 +29,8 @@ if ((isset($_GET['Id'])) && ($_GET['Id'] != "")) {
   $deleteSQL = sprintf("DELETE FROM dg_usuario WHERE Id=%s",
                        GetSQLValueString($_GET['Id'], "text"));
 
-  mysql_select_db('modelos', $con);
-  $Result1 = mysqli_query($deleteSQL, $con) or die(mysqli_error());
+  mysqli_select_db('modelos', $con);
+  $Result1 = mysqli_query($deleteSQL, $con) or die(mysqli_error($con));
 
   $deleteGoTo = "viv_ad_mu.php";
   if (isset($_SERVER['QUERY_STRING'])) {

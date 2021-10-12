@@ -1,10 +1,10 @@
 <?php session_start();
     //datos para establecer la conexion con la base de mysqli.
-	$con = mysqli_connect('localhost','medrano','medrano') or die('Ha fallado la conexi&oacute;n: '.mysqli_error());
+	$con = mysqli_connect('localhost','medrano','medrano') or die('Ha fallado la conexi&oacute;n: '.mysqli_error($con));
 	echo "<p>Otro error.</p>";
-	mysqli_select_db($con,'publications') or die('Error al seleccionar la Base de Datos: '.mysqli_error());
+	mysqli_select_db($con,'publications') or die('Error al seleccionar la Base de Datos: '.mysqli_error($con));
 	echo "<p>Otro error.</p>";
-	//$con = mysqli_connect('localhost','medrano','medrano') or die ('Ha fallado la conexi&oacute;n: '.mysqli_error());
+	//$con = mysqli_connect('localhost','medrano','medrano') or die ('Ha fallado la conexi&oacute;n: '.mysqli_error($con));
     
     function quitar($mensaje)
     {

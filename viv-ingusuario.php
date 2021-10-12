@@ -209,5 +209,5 @@ echo '<Script language=JavaScript>'.
 	 'window.onmousedown=right;'.
 	 '</script>';
 echo '</html>';
-mysql_close($con);
+mysqli_close($con);
 ?>

@@ -40,10 +40,10 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR" or $_SESSION["t_cond"] == "RESPONZABLE
 		}else{
 				// Comprobamos si el nombre de usuario o la cuenta de correo ya existen
                 $checkuser = mysqli_query("SELECT usuario FROM dg_usuario WHERE usuario='$username'");
-                $username_exist = mysql_num_rows($checkuser);
+                $username_exist = mysqli_num_rows($checkuser);
                
                 $checkemail = mysqli_query("SELECT email FROM dg_usuario WHERE email='$email'");
-                $email_exist = mysql_num_rows($checkemail);
+                $email_exist = mysqli_num_rows($checkemail);
 				
 				if ($email_exist>0|$username_exist>0) {
                     echo "El nombre de usuario o la cuenta de correo estan ya en uso";
@@ -52,7 +52,7 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR" or $_SESSION["t_cond"] == "RESPONZABLE
 					$query = 'INSERT INTO dg_usuario (usuario, nombre, password, fecha, condicion, departamento)
                     VALUES (\''.$username.'\',\''.$nombres.'\',\''.$password.'\',\''.date("Y-m-d").'\', \''.$condicion.'\', \''.$departamento.'\')';
                    
-                    mysqli_query($query) or die(mysqli_error());
+                    mysqli_query($query) or die(mysqli_error($con));
 					} // Cerramos email y usuario
 					// Fin del Codigo de Envío
 		}//Cerramos si hay campos en blanco

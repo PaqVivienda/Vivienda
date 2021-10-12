@@ -36,7 +36,7 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
   $pn_par_calor = $_SESSION['pn_par_calor'];
   $sql_pn_capas = mysqli_query("SELECT * FROM proy_matcomp where proy_cod_comp = '$pn_modelo'");
   $res_pn_capas = mysqli_query($sql_pn_capas, $con);
-  while ($row_pn_capas = mysql_fetch_array($res_pn_capas, MYSQL_ASSOC)){
+  while ($row_pn_capas = mysqli_fetch_array($res_pn_capas, MYSQLI_ASSOC)){
 	  $pn_desc_capa = $row_pn_capas['proy_desc_capa'];
 	  $pn_esp_capa = $row_pn_capas['proy_espesor'];
 	  $pn_dens_capa = $row_pn_capas['proy_densidad'];
@@ -459,7 +459,7 @@ echo '		  <tr>';
 echo '			<td align="center" colspan="2">';
 echo '				<select name="xor" type="text" size="1" id="sel_cm">';
 						$res_or = mysqli_query($sql_or, $con);
-						while ($row_or = mysql_fetch_array($res_or, MYSQL_ASSOC)){
+						while ($row_or = mysqli_fetch_array($res_or, MYSQLI_ASSOC)){
 						echo '<option value="'.$row_or['id'].'">'.$row_or['proy_orient_desc'].'</option>';
 						}
 echo '				</select>';
@@ -513,7 +513,7 @@ echo '				<select name="xregion" id="region" class="sel_mes" onchange="CargarMes
 					<option>- SELECCIONA REGION -</option>';
 					$query_pais = "SELECT * FROM proy_pais";
 					$result_pais =mysqli_query($query_pais, $con);
-					while($row_pais = mysql_fetch_array($result_pais, MYSQL_ASSOC))
+					while($row_pais = mysqli_fetch_array($result_pais, MYSQLI_ASSOC))
 					{
 						echo '<option value="'.$row_pais['cod_pais'].'">'.utf8_decode($row_pais['continente']).' - '.utf8_decode($row_pais['pais']).' - '.utf8_decode($row_pais['capital']).'</option>';
 					}
@@ -817,6 +817,6 @@ echo '<script>
 		</script>';
 
 echo '</html>';
-mysql_close($con);
+mysqli_close($con);
 
 ?>

@@ -15,7 +15,7 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
 // Conectamos Con la base de Datos
 include("conexion.php");
 $res_consulta = mysqli_query('SELECT * FROM dg_usuario');
-$row_consulta = mysql_fetch_assoc($res_consulta);
+$row_consulta = mysqli_fetch_assoc($res_consulta);
 // FIN DE LA CONEXION A LA BASE DE DATOS
 /*
 	================================================================
@@ -136,7 +136,7 @@ echo '			</tr>';
 echo '									<a href="viv_ad_mu_bor.php?Id='.$row_consulta['id'].'"><font face="Verdana, Geneva, sans-serif", size="2", color="#063b01"> Eliminar</font></a>';
 					echo '</td>';
 					echo '</tr>';
-				} while ($row_consulta = mysql_fetch_assoc($res_consulta));
+				} while ($row_consulta = mysqli_fetch_assoc($res_consulta));
 echo '		</table>';
 echo '		<p>&nbsp;</p>';
 echo '		<p>&nbsp;</p>';
@@ -172,5 +172,5 @@ echo '<Script language=JavaScript>'.
 	 'window.onmousedown=right;'.
 	 '</script>';
 echo '</html>';
-mysql_close($con);
+mysqli_close($con);
 ?>

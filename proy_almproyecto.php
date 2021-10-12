@@ -30,7 +30,7 @@ $estatu = "Abierto";
 
 // Almacenamos la Informaciòn
 $sql = 'INSERT INTO proy_proyecto (proy_cod, proy_desc, proy_fecha, proy_codtech, proy_tech_desc, proy_estatu) VALUES (\''.$codigo.'\', \''.$descripcion.'\', \''.$fecha.'\', \''.$cod_tech.'\', \''.$desc_tech.'\', \''.$estatu.'\')';
-	mysqli_query($con, $sql) or die(mysqli_error());
+	mysqli_query($con, $sql) or die(mysqli_error($con));
 // Actualizamos el Conteo
 $sqlcont = "UPDATE proy_cont SET conteo=".$_SESSION['b_res']." WHERE accion='CONAC'";
 mysqli_query($con, $sqlcont);

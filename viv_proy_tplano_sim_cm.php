@@ -624,7 +624,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pn_par_calor.'</b></font></td>';
 echo '			</tr>'; // Finalización de la Pared Norte
 				$res_pn = mysqli_query($sql_pn_cap, $con);
-				while ($row_pn = mysql_fetch_array($res_pn, MYSQL_ASSOC)){
+				while ($row_pn = mysqli_fetch_array($res_pn, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
 					echo '<td>&nbsp;</td>';
@@ -653,7 +653,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$ps_par_calor.'</b></font></td>';
 echo '			</tr>'; // Finalización de la Pared Sur
 				$res_ps = mysqli_query($sql_ps_cap, $con);
-				while ($row_ps = mysql_fetch_array($res_ps, MYSQL_ASSOC)){
+				while ($row_ps = mysqli_fetch_array($res_ps, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
 					echo '<td>&nbsp;</td>';
@@ -682,7 +682,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pe_par_calor.'</b></font></td>';
 echo '			</tr>'; // Finalización de la Pared Este
 				$res_pe = mysqli_query($sql_pe_cap, $con);
-				while ($row_pe = mysql_fetch_array($res_pe, MYSQL_ASSOC)){
+				while ($row_pe = mysqli_fetch_array($res_pe, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
 					echo '<td>&nbsp;</td>';
@@ -711,7 +711,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$po_par_calor.'</b></font></td>';
 echo '			</tr>'; // Finalización de la Pared Oeste
 				$res_po = mysqli_query($sql_po_cap, $con);
-				while ($row_po = mysql_fetch_array($res_po, MYSQL_ASSOC)){
+				while ($row_po = mysqli_fetch_array($res_po, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
 					echo '<td>&nbsp;</td>';
@@ -765,7 +765,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pi_calor.'</b></font></td>';
 echo '			</tr>';
 				$res_pi = mysqli_query($sql_pi_cap, $con);
-				while ($row_pi = mysql_fetch_array($res_pi, MYSQL_ASSOC)){
+				while ($row_pi = mysqli_fetch_array($res_pi, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
 					echo '<td>&nbsp;</td>';
@@ -791,7 +791,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pi_calor.'</b></font></td>';
 echo '			</tr>';
 				$res_pi = mysqli_query($sql_pi_cap, $con);
-				while ($row_pi = mysql_fetch_array($res_pi, MYSQL_ASSOC)){
+				while ($row_pi = mysqli_fetch_array($res_pi, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
 					echo '<td>&nbsp;</td>';
@@ -1020,7 +1020,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$tpl_calor.'</b></font></td>';
 echo '			</tr>';
 				$res_tpl = mysqli_query($sql_tpl_cap, $con);
-				while ($row_tpl = mysql_fetch_array($res_tpl, MYSQL_ASSOC)){
+				while ($row_tpl = mysqli_fetch_array($res_tpl, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_tpl['proy_descripcion'].'</b></font></td>';
 					echo '<td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_tpl['proy_espesor'].'</b></font></td>';
@@ -1283,6 +1283,6 @@ echo '<Script language=JavaScript>'.
 	 'window.onmousedown=right;'.
 	 '</script>';
 echo '</html>';
-mysql_close($con);
+mysqli_close($con);
 
 ?>

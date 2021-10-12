@@ -494,7 +494,7 @@ echo '			  <td align="center" height="60"><font face="Comic Sans MS,arial,verdan
 echo '			  		<td align="center">';
 echo '						<select name="xpn_pared_cod" type="text" size="1" id="sel_pared">';
 							$res_pared = mysqli_query($sql_pared, $con);
-							while ($row_pared = mysql_fetch_array($res_pared, MYSQL_ASSOC)){
+							while ($row_pared = mysqli_fetch_array($res_pared, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_pared['proy_modelo'].'">'.$row_pared['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -502,14 +502,14 @@ echo '					</td>';
 /*echo '			  		<td align="center">';
 echo '						<select name="xpn_recub_cod" type="text" size="1" id="sel_pared">';
 							$res_recub = mysqli_query($sql_recub, $con);
-							while ($row_recub = mysql_fetch_array($res_recub, MYSQL_ASSOC)){
+							while ($row_recub = mysqli_fetch_array($res_recub, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_recub['id'].'">'.$row_recub['proy_descripcion'].'</option>';
 							}
 echo '						</select>';*/
 echo '			  		<td align="center">';
 echo '						<select name="xpn_puerta_cod" type="text" size="1" id="sel_pared">';
 							$res_puerta = mysqli_query($sql_puerta, $con);
-							while ($row_puerta = mysql_fetch_array($res_puerta, MYSQL_ASSOC)){
+							while ($row_puerta = mysqli_fetch_array($res_puerta, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_puerta['id'].'">'.$row_puerta['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -517,7 +517,7 @@ echo '					</td>';
 echo '			  		<td align="center">';
 echo '						<select name="xpn_vent_cod" type="text" size="1" id="sel_pared">';
 							$res_ventana = mysqli_query($sql_ventana, $con);
-							while ($row_ventana = mysql_fetch_array($res_ventana, MYSQL_ASSOC)){
+							while ($row_ventana = mysqli_fetch_array($res_ventana, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_ventana['id'].'">'.$row_ventana['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -529,7 +529,7 @@ echo '			  <td align="center" height="60"><font face="Comic Sans MS,arial,verdan
 echo '			  		<td align="center">';
 echo '						<select name="xpo_par_cod" type="text" size="1" id="sel_pared">';
 							$res_pared = mysqli_query($sql_pared, $con);
-							while ($row_pared = mysql_fetch_array($res_pared, MYSQL_ASSOC)){
+							while ($row_pared = mysqli_fetch_array($res_pared, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_pared['proy_modelo'].'">'.$row_pared['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -537,7 +537,7 @@ echo '					</td>';
 /*echo '			  		<td align="center">';
 echo '						<select name="xpo_recub_cod" type="text" size="1" id="sel_pared">';
 							$res_recub = mysqli_query($sql_recub, $con);
-							while ($row_recub = mysql_fetch_array($res_recub, MYSQL_ASSOC)){
+							while ($row_recub = mysqli_fetch_array($res_recub, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_recub['id'].'">'.$row_recub['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -545,7 +545,7 @@ echo '					</td>';*/
 echo '			  		<td align="center">';
 echo '						<select name="xpo_puerta_cod" type="text" size="1" id="sel_pared">';
 							$res_puerta = mysqli_query($sql_puerta, $con);
-							while ($row_puerta = mysql_fetch_array($res_puerta, MYSQL_ASSOC)){
+							while ($row_puerta = mysqli_fetch_array($res_puerta, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_puerta['id'].'">'.$row_puerta['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -553,7 +553,7 @@ echo '					</td>';
 echo '			  		<td align="center">';
 echo '						<select name="xpo_vent_cod" type="text" size="1" id="sel_pared">';
 							$res_ventana = mysqli_query($sql_ventana, $con);
-							while ($row_ventana = mysql_fetch_array($res_ventana, MYSQL_ASSOC)){
+							while ($row_ventana = mysqli_fetch_array($res_ventana, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_ventana['id'].'">'.$row_ventana['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -564,7 +564,7 @@ echo '			  <td align="center" height="60"><font face="Comic Sans MS,arial,verdan
 echo '			  		<td align="center">';
 echo '						<select name="xpe_par_cod" type="text" size="1" id="sel_pared">';
 							$res_pared = mysqli_query($sql_pared, $con);
-							while ($row_pared = mysql_fetch_array($res_pared, MYSQL_ASSOC)){
+							while ($row_pared = mysqli_fetch_array($res_pared, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_pared['proy_modelo'].'">'.$row_pared['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -572,7 +572,7 @@ echo '					</td>';
 /*echo '			  		<td align="center">';
 echo '						<select name="xpe_recub_cod" type="text" size="1" id="sel_pared">';
 							$res_recub = mysqli_query($sql_recub, $con);
-							while ($row_recub = mysql_fetch_array($res_recub, MYSQL_ASSOC)){
+							while ($row_recub = mysqli_fetch_array($res_recub, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_recub['id'].'">'.$row_recub['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -580,7 +580,7 @@ echo '					</td>';*/
 echo '			  		<td align="center">';
 echo '						<select name="xpe_puerta_cod" type="text" size="1" id="sel_pared">';
 							$res_puerta = mysqli_query($sql_puerta, $con);
-							while ($row_puerta = mysql_fetch_array($res_puerta, MYSQL_ASSOC)){
+							while ($row_puerta = mysqli_fetch_array($res_puerta, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_puerta['id'].'">'.$row_puerta['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -588,7 +588,7 @@ echo '					</td>';
 echo '			  		<td align="center">';
 echo '						<select name="xpe_vent_cod" type="text" size="1" id="sel_pared">';
 							$res_ventana = mysqli_query($sql_ventana, $con);
-							while ($row_ventana = mysql_fetch_array($res_ventana, MYSQL_ASSOC)){
+							while ($row_ventana = mysqli_fetch_array($res_ventana, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_ventana['id'].'">'.$row_ventana['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -599,7 +599,7 @@ echo '			  <td align="center" height="60"><font face="Comic Sans MS,arial,verdan
 echo '			  		<td align="center">';
 echo '						<select name="xps_par_cod" type="text" size="1" id="sel_pared">';
 							$res_pared = mysqli_query($sql_pared, $con);
-							while ($row_pared = mysql_fetch_array($res_pared, MYSQL_ASSOC)){
+							while ($row_pared = mysqli_fetch_array($res_pared, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_pared['proy_modelo'].'">'.$row_pared['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -607,7 +607,7 @@ echo '					</td>';
 /*echo '			  		<td align="center">';
 echo '						<select name="xps_recub_cod" type="text" size="1" id="sel_pared">';
 							$res_recub = mysqli_query($sql_recub, $con);
-							while ($row_recub = mysql_fetch_array($res_recub, MYSQL_ASSOC)){
+							while ($row_recub = mysqli_fetch_array($res_recub, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_recub['id'].'">'.$row_recub['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -615,7 +615,7 @@ echo '					</td>';*/
 echo '			  		<td align="center">';
 echo '						<select name="xps_puerta_cod" type="text" size="1" id="sel_pared">';
 							$res_puerta = mysqli_query($sql_puerta, $con);
-							while ($row_puerta = mysql_fetch_array($res_puerta, MYSQL_ASSOC)){
+							while ($row_puerta = mysqli_fetch_array($res_puerta, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_puerta['id'].'">'.$row_puerta['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -623,7 +623,7 @@ echo '					</td>';
 echo '			  		<td align="center">';
 echo '						<select name="xps_vent_cod" type="text" size="1" id="sel_pared">';
 							$res_ventana = mysqli_query($sql_ventana, $con);
-							while ($row_ventana = mysql_fetch_array($res_ventana, MYSQL_ASSOC)){
+							while ($row_ventana = mysqli_fetch_array($res_ventana, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_ventana['id'].'">'.$row_ventana['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -636,7 +636,7 @@ echo '				<td align="center" width="60"><font face="Comic Sans MS,arial,verdana"
 echo '			  		<td>';
 echo '						<select name="xtech_incl_cod" type="text" size="1" id="sel_teinc">';
 							$res_techo = mysqli_query($sql_techo, $con);
-							while ($row_techo = mysql_fetch_array($res_techo, MYSQL_ASSOC)){
+							while ($row_techo = mysqli_fetch_array($res_techo, MYSQLI_ASSOC)){
 							echo '<option value="'.$row_techo['proy_cod'].'">'.$row_techo['proy_descripcion'].'</option>';
 							}
 echo '						</select>';
@@ -712,5 +712,5 @@ document.getElementById("dato_b2").value = document.getElementById("dato_b1").va
 }
 </script>';
 echo '</html>';
-mysql_close($con);
+mysqli_close($con);
 ?>

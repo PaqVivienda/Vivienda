@@ -31,17 +31,17 @@ if (isset($_POST['boton_enviar'])){
 	$linea = $lin + 1;
 	$query = 'INSERT INTO il_correccion (n_caso, linea, desc_corr, resp_corr, fecha_comp)
 			VALUES (\''.$N_caso.'\', \''.$_SESSION['xlinea'].'\', \''.$_SESSION['xdesc'].'\', \''.$_SESSION['xresp'].'\', \''.$_SESSION['xfecha'].'\')';
-	mysqli_query($query) or die(mysqli_error());
+	mysqli_query($query) or die(mysqli_error($con));
 	header ("Location: il-ingcor_previa.php");
   }
 } else {
 	// Veridficamos si hay datos
 	$sql_cr = "SELECT COUNT(*) FROM il_correccion where n_caso='$N_caso'";
-	$res_cr=mysqli_query($sql_cr, $con) or die (mysqli_error());
-	$total_cr=mysql_result($res_cr,0);
+	$res_cr=mysqli_query($sql_cr, $con) or die (mysqli_error($con));
+	$total_cr=mysqli_result($res_cr,0);
 	$sql_acr = "SELECT * FROM il_correccion where n_caso='$N_caso'";
-	$cons_acr = mysqli_query($sql_acr, $con) or die(mysqli_error());
-	$row_cr = mysql_fetch_assoc($cons_acr);
+	$cons_acr = mysqli_query($sql_acr, $con) or die(mysqli_error($con));
+	$row_cr = mysqli_fetch_assoc($cons_acr);
 	$linea = $total_cr + 1;
 }
 /*
@@ -123,7 +123,7 @@ echo '					<td width="10%"><font face="Verdana, Geneva, sans-serif", size="+1" c
 echo '				</tr>';
 if ($total_cr>0) {
 	$result = mysqli_query($sql_acr, $con);
-	while ($row_cr = mysql_fetch_array($result, MYSQL_ASSOC))
+	while ($row_cr = mysqli_fetch_array($result, MYSQLI_ASSOC))
 	{
 echo '				<tr>';
 echo '					<td width="10%" align="center"><font face="Verdana, Geneva, sans-serif", size="+1" color="#f7fd4d">'.$row_cr['linea'].'</font></td>';

@@ -55,8 +55,8 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
 					   GetSQLValueString($_POST['perfil'], "text"),
                        GetSQLValueString($_POST['Id'], "int"));
 
-		  mysql_select_db('modelos', $con);
-		  $Result1 = mysqli_query($updateSQL, $con) or die(mysqli_error());
+		  mysqli_select_db('modelos', $con);
+		  $Result1 = mysqli_query($updateSQL, $con) or die(mysqli_error($con));
 			// Rango para el envío de Correos
 
 			// Fin del Codigo de Envío
@@ -67,13 +67,13 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
 		  }
 		  header(sprintf("Location: %s", $updateGoTo));
 		}
-		mysql_select_db('modelos', $con);
+		mysqli_select_db('modelos', $con);
 		
 		$valor = $_GET['Id'];
 		$query_modificar_consulta = "SELECT * FROM dg_usuario where id=$valor";
-		$modificar_consulta = mysqli_query($query_modificar_consulta, $con) or die(mysqli_error());
-		$row_modificar_consulta = mysql_fetch_assoc($modificar_consulta);
-		$totalRows_modificar_consulta = mysql_num_rows($modificar_consulta);
+		$modificar_consulta = mysqli_query($query_modificar_consulta, $con) or die(mysqli_error($con));
+		$row_modificar_consulta = mysqli_fetch_assoc($modificar_consulta);
+		$totalRows_modificar_consulta = mysqli_num_rows($modificar_consulta);
 // FIN DE LA SOLICITUD RECIBIDA
 /*
 	================================================================
@@ -279,5 +279,5 @@ echo '<Script language=JavaScript>'.
 	 'window.onmousedown=right;'.
 	 '</script>';
 echo '</html>';
-mysql_close($con);
+mysqli_close($con);
 ?>

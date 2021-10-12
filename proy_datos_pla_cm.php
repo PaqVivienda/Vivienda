@@ -382,7 +382,7 @@ include('conexion.php');
   $dat2 = $_SESSION['dat2'].".dat";
   // Fin Datos de Simulacion
   $sql_sim = 'INSERT INTO proy_simulacion (proy_cod, proy_sim_titulo, proy_sim_ttsim, proy_sim_or_desc, proy_sim_or_img, proy_sim_carpeta, proy_sim_archtec, proy_sim_archdat1, proy_sim_archdat2) VALUES (\''.$proy_cod.'\', \''.$titulo.'\', \''.$ttsim.'\', \''.$or_desc.'\', \''.$or_img.'\', \''.$carpeta.'\', \''.$tec.'\', \''.$dat1.'\', \''.$dat2.'\')';
-  mysqli_query($con, $sql_sim) or die(mysqli_error());
+  mysqli_query($con, $sql_sim) or die(mysqli_error($con));
   // Fin Datos y Almacenamiento de Simulacion
   // Datos del Programa de Condiciones Metereológicas
   $_SESSION['nubosidad'] = $_POST['xnubosidad'];
@@ -526,7 +526,7 @@ include('conexion.php');
   //********************************************
   // Almacenamos los Datos
    $sql_cm = 'INSERT INTO proy_cm_sim (proy_cm_cod, proy_cm_nubosidad, proy_cm_cambioaire, proy_cm_hum_relativa, proy_cm_veloc_aire, proy_cm_mes, proy_cm_latitud, proy_cm_declinacion, proy_cm_hlocal_hsolar, proy_cm_tmin, proy_cm_tmin_alos, proy_cm_tmax, proy_cm_tmas_alos, proy_cm_norte, proy_cm_norte_alos, proy_cm_sur, proy_cm_sur_alos, proy_cm_este, proy_cm_este_alos, proy_cm_oeste, proy_cm_oeste_alos, proy_cm_techo, capn_cb, capn_cr, caps_cb, caps_cr, cape_cb, cape_cr, capo_cb, capo_cr, catpl_cb, catpl_cr, capta_cr, cavna_cr, monitoreo, monit_I,monit_J, monit_K, velocidad_uvw, vuvw_fr, presion, presion_fr, temperatura, temperatura_fr, EMIP1V, EMITE, EMIP3V, EMIP4V, EMIP5V, EMIV, EMIPU, nodo_i, nodo_j, nodo_k) VALUES (\''.$proy_cod.'\', \''.$nubosidad.'\', \''.$cambaire.'\', \''.$humrelat.'\', \''.$velaire.'\', \''.$cm_mes.'\', \''.$cm_latitud.'\', \''.$cm_declinacion.'\', \''.$cm_hlocal_hsolar.'\', \''.$cm_tmin.'\', \''.$cm_tmin_alos.'\', \''.$cm_tmax.'\', \''.$cm_tmax_alos.'\', \''.$cm_norte.'\', \''.$cm_norte_alos.'\', \''.$cm_sur.'\', \''.$cm_sur_alos.'\', \''.$cm_este.'\', \''.$cm_este_alos.'\', \''.$cm_oeste.'\', \''.$cm_oeste_alos.'\', \''.$cm_techo.'\', \''.$capn_cb.'\', \''.$capn_cr.'\', \''.$caps_cb.'\', \''.$caps_cr.'\', \''.$cape_cb.'\', \''.$cape_cr.'\', \''.$capo_cb.'\', \''.$capo_cr.'\', \''.$catpl_cb.'\', \''.$catpl_cr.'\', \''.$capta_cr.'\', \''.$cavna_cr.'\', \''.$monit.'\', \''.$xxi.'\', \''.$xxj.'\', \''.$xxk.'\',\''.$xuvw.'\',\''.$xxveluvw.'\', \''.$pres.'\', \''.$presion.'\', \''.$tempe.'\', \''.$temperatura.'\', \''.$EMIP1V.'\', \''.$EMITE.'\', \''.$EMIP3V.'\', \''.$EMIP4V.'\', \''.$EMIP5V.'\', \''.$EMIV.'\', \''.$EMIPU.'\', \''.$xnodo_i.'\', \''.$xnodo_j.'\', \''.$xnodo_k.'\')';
-  mysqli_query($con, $sql_cm) or die(mysqli_error());
+  mysqli_query($con, $sql_cm) or die(mysqli_error($con));
   // Fin del Programa de Condiciones Metereológicas
   // Pasamos a ver los resultados
   header ("Location: viv_proy_tplano_sim_cm.php");

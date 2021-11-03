@@ -1,11 +1,6 @@
 <?php session_start();
 //datos para establecer la conexion con la base de mysqli.
-$con = mysqli_connect('localhost','medrano','medrano') or die('Ha fallado la conexi&oacute;n: '.mysqli_error($con));
-echo "<p>Otro error.</p>";
-mysqli_select_db($con,'publications') or die('Error al seleccionar la Base de Datos: '.mysqli_error($con));
-echo "<p>Otro error.</p>";
-//$con = mysqli_connect('localhost','medrano','medrano') or die ('Ha fallado la conexi&oacute;n: '.mysqli_error($con));
-
+include('conexion.php');
 function quitar($mensaje)
 {
     $nopermitidos = array("'",'\\','<','>',"\"");
@@ -37,14 +32,11 @@ if(trim($_POST["login_name"]) != "" && trim($_POST["login_password"]) != "")
             } else {
                 echo"<script type=\"text/javascript\">alert('Este Módulo na ha sido Construido....!'); window.location='index.php';</script>";
             }
-            //$_SESSION["k_nomuser"] = $row['nomuser'];
         }else{
             echo"<script type=\"text/javascript\">alert('Usted ha introducido el Password Incorrecto....!'); window.location='index.php';</script>";
-            //header ("Location: vfl-admin-passincor.php");
         }
     }else{
         echo"<script type=\"text/javascript\">alert('Usted no es Usuario de Vivienda....!'); window.location='index.php';</script>";
-        //header ("Location: vfl-admin-usuincor.php");
     }
     $_SESSION['email'] = $email;
     $_SESSION['password'] = $password;
@@ -54,4 +46,4 @@ if(trim($_POST["login_name"]) != "" && trim($_POST["login_password"]) != "")
     
     echo"<script type=\"text/javascript\">alert('Debe Introducir Correo y Contraseña....!'); window.location='index.php';</script>";
 }
-mysqli_close();
+mysqli_close($con);

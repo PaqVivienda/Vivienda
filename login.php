@@ -29,7 +29,7 @@ if(trim($_POST["login_name"]) != "" && trim($_POST["login_password"]) != "")
             if (file_exists("inicio.php")){ 
                 $password = $_POST["login_password"];
                 $user = $_POST["login_name"];
-                $email = $row['correo']
+                $email = $row['correo'];
                 $_SESSION["t_cond"] = $row['condicion'];
                 $_SESSION["nom_user"] = $row['nombre'];
                 $_SESSION["k_user"] = $row['nombre'];

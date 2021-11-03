@@ -29,9 +29,9 @@ if(trim($_POST["login_name"]) != "" && trim($_POST["login_password"]) != "")
             if (file_exists("inicio.php")){ 
                 $password = $_POST["login_password"];
                 $user = $_POST["login_name"];
+                $email = $row['correo']
                 $_SESSION["t_cond"] = $row['condicion'];
                 $_SESSION["nom_user"] = $row['nombre'];
-                $_SESSION["tpros"] = $row['pros'];
                 $_SESSION["k_user"] = $row['nombre'];
                 header ("Location: inicio.php");
             } else {
@@ -48,17 +48,13 @@ if(trim($_POST["login_name"]) != "" && trim($_POST["login_password"]) != "")
     }
     $_SESSION['email'] = $email;
     $_SESSION['password'] = $password;
-    $_SESSION['usuario'] = $usur;
+    $_SESSION['usuario'] = $user;
     mysqli_free_result($result);
 }else{
     
     echo"<script type=\"text/javascript\">alert('Debe Introducir Correo y Contraseña....!'); window.location='index.php';</script>";
 }
 mysqli_close();
-$_SESSION['email'] = $email;
-$_SESSION['password'] = $password;
-$_SESSION['usuario'] = $usur;
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

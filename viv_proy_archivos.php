@@ -494,7 +494,7 @@ echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", 
 // Proceso de Archivo  de Propiedades
 // Creamos la Carpeta del Archivo .dat
 // Asignado permisos de lectura, escritura y ejecucion a todos los usuarios
-if (!file_exists("../"$carpeta)) {
+if (!file_exists("../" . $carpeta)) {
     mkdir("../" . $carpeta, 0777, true);
 }
 

@@ -1,532 +1,300 @@
 <?PHP
 
 session_start();
+
+// Definimos como constante el separador de los datos del archivo nodal
+define("delimiter", "\t");
+
+// Definimos como constantes el numero correspondiente a cada tipo de nodo segun su constitucion
+define("aire" , 0);
+define("pared" , 1);
+define("ventana", 2);
+define("piso", 3);
+define("techo", 4);
+define("puerta", 5);
+define("pared_int", 8);
+
+// Propiedades del piso
+define("cond_piso", "8.83600E-01");
+define("cp_piso", "9.35000E-01");
+define("dens_piso" ,"1.21752E+03");
+
+// Propiedades del aire
+define("cond_aire", "2.60000E-02");
+define("cp_aire", "1.06300E+00");
+define("dens_aire", "1.22300E+00");
+
+foreach ($_SESSION as $key => $value) {
+    $GLOBALS[$key] = $value;
+}
+
+
+function format_number($number, $number_decimal=3) {
+    
+    return sprintf("%.". $number_decimal . "E", $number);
+    
+}
+
+
+function write_to_file($file, ...$arguments) {
+    // Esta funcion escribe una lista de argumentos  al archivo $file separados por un delimitador
+    // En caso de ser exitosa la escritura la funcion regresa el numero de caracteres escritos al archivo
+    // En caso de ser fallida la escritura la funcion regresa un numero negativo
+    
+    $string_to_write = "";
+    foreach ($arguments as $arg) {
+        
+        if (empty($string_to_write)) {
+            $string_to_write = $arg;
+        } else {
+            $string_to_write = $string_to_write . delimiter . $arg;
+        }
+    }
+    
+    $string_to_write = $string_to_write . "\r\n";
+    return fwrite($file, $string_to_write);
+}
+
+
+function write_techo($i_coord, $j_coord, $k_coord) {
+    //Escribe linea que describe el nodo ($i_coord, $j_coord, $k_cood)
+    //de tipo techo al archivo nodal
+    
+    global $file_properties, $tpl_cond, $tpl_calor, $tpl_dens;
+    
+    return write_to_file($file_properties, $i_coord, $j_coord, $k_coord, techo, format_number($tpl_cond), format_number($tpl_calor), format_number($tpl_dens));
+}
+
+
+function write_piso($i_coord, $j_coord, $k_coord) {
+    //Escribe linea que describe el nodo ($i_coord, $j_coord, $k_cood)
+    //de tipo techo al archivo nodal
+    
+    global $file_properties;
+    
+    return write_to_file($file_properties, $i_coord, $j_coord, $k_coord, piso, format_number(cond_piso), format_number(cp_piso), format_number(dens_piso));
+    
+}
+
+
+function write_pared($i_coord, $j_coord, $k_coord, $nombre_pared) {
+    //Escribe linea que describe el nodo ($i_coord, $j_coord, $k_cood)
+    //de tipo pared al archivo nodal
+    
+    global $file_properties;
+    $pared_cond = $GLOBALS["p" . $nombre_pared[0] . "_par_cond"];
+    $pared_calor  = $GLOBALS["p" . $nombre_pared[0] . "_par_calor"];
+    $pared_densidad = $GLOBALS["p" . $nombre_pared[0] . "_par_dens"];
+    
+    return write_to_file($file_properties, $i_coord, $j_coord, $k_coord, pared, format_number($pared_cond) , format_number($pared_calor), format_number($pared_densidad));
+    
+}
+
+
+function write_pared_interna($i_coord, $j_coord, $k_coord, $nombre_pared) {
+    //Escribe linea que describe el nodo ($i_coord, $j_coord, $k_cood)
+    //de tipo pared al archivo nodal
+    
+    global $file_properties;
+    $pared_cond = $GLOBALS["p" . $nombre_pared[0] . "_cond"];
+    $pared_calor  = $GLOBALS["p" . $nombre_pared[0] . "_calor"];
+    $pared_densidad = $GLOBALS["p" . $nombre_pared[0] . "_dens"];
+    
+    return write_to_file($file_properties, $i_coord, $j_coord, $k_coord, pared_int, format_number($pared_cond) , format_number($pared_calor), format_number($pared_densidad));
+    
+}
+
+
+function write_vent($i_coord, $j_coord, $k_coord, $nombre_pared) {
+    
+    global $file_properties;
+    $pared_cond = $GLOBALS["p" . $nombre_pared[0] . "_vent_cond"];
+    $pared_calor  = $GLOBALS["p" . $nombre_pared[0] . "_vent_calor"];
+    $pared_densidad = $GLOBALS["p" . $nombre_pared[0] . "_vent_dens"];
+    
+    return write_to_file($file_properties, $i_coord, $j_coord, $k_coord, ventana, format_number($pared_cond), format_number($pared_calor), format_number($pared_densidad));
+    
+}
+
+
+function write_puerta($i_coord, $j_coord, $k_coord, $nombre_pared) {
+    
+    global $file_properties;
+    $pared_cond = $GLOBALS["p" . $nombre_pared[0] . "_puerta_cond"];
+    $pared_calor  = $GLOBALS["p" . $nombre_pared[0] . "_puerta_calor"];
+    $pared_densidad = $GLOBALS["p" . $nombre_pared[0] . "_puerta_dens"];
+    
+    return write_to_file($file_properties, $i_coord, $j_coord, $k_coord, puerta, format_number($pared_cond), format_number($pared_calor), format_number($pared_densidad));
+    
+}
+
+
+function write_aire($i_coord, $j_coord, $k_coord) {
+    //Escribe linea que describe el nodo ($i_coord, $j_coord, $k_cood)
+    //de tipo techo al archivo nodal
+    
+    global $file_properties;
+    
+    return write_to_file($file_properties, $i_coord, $j_coord, $k_coord, aire, format_number(cond_aire), format_number(cp_aire), format_number(dens_aire));
+    
+}
+
+
+function is_pared_interna($coord, $pared_sep, $dimension_malla) {
+    
+    $pared_coord = floor($pared_sep/$dimension_malla);
+    
+    if ($coord == $pared_coord) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+    
+}
+
+
+function is_vent($pos_hor, $pos_ver, $dim_hor, $dim_ver, $ancho, $alto) {
+    // Esta funcion regresa TRUE si la posicion dada por ($pos_hor, $pos_ver) corresponde a una ventana
+    // De no ser asi la funcion regresa FALSE
+    if (($pos_ver >= $dim_ver) and ($pos_ver <= ($dim_ver + $alto)))
+    {
+        if (($pos_hor >= $dim_hor) and ($pos_ver <= ($dim_hor + $ancho))) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+}
+
+
+function is_puerta($pos_hor, $pos_ver, $dim_hor, $ancho, $alto) {
+    // Esta funcion regresa TRUE si la posicion dada por ($pos_hor, $pos_ver) corresponde a una puerta
+    // De no ser asi la funcion regresa FALSE
+    
+    if ($pos_ver <= $alto)
+    {
+        if (($pos_hor >= $dim_hor) and ($pos_hor <= ($dim_hor + $ancho))) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+}
+
+
+function is_vent_active($nombre_ventana) {
+    // Esta funcion regresa TRUE si para la pared $nombre_ventana se encuentra una ventana activa
+    // De no ser asi regresa FALSE
+    
+    $wall_indicator = $nombre_ventana[0];
+    $vent_indicator = "p" . $wall_indicator . "_ventana";
+    if (isset($GLOBALS[$vent_indicator]) and $GLOBALS[$vent_indicator]) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
+
+function is_puerta_active($nombre_puerta) {
+    // Esta funcion regresa TRUE si para la pared $nombre_puerta se encuentra una puerta activa
+    // De no ser asi regresa FALSE
+    
+    $wall_indicator = $nombre_puerta[0];
+    $puerta_indicator = "p" . $wall_indicator . "_puerta";
+    if (isset($GLOBALS[$puerta_indicator]) and $GLOBALS[$puerta_indicator]) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
+
+function is_pared_interna_active($nombre_pared) {
+    
+    if ($GLOBALS[$nombre_pared]) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
+
+
 // Verificamos la Entrada por la Intranet
 $password = $_SESSION['password'];
 if ($password != "")
 {
 }else{
-		echo"<script type=\"text/javascript\">alert('Debe Introducir un Correo Electrónico y una Contaseña....!'); window.location='index.php';</script>";
+    echo"<script type=\"text/javascript\">alert('Debe Introducir un Correo Electrónico y una Contaseña....!'); window.location='index.php';</script>";
 }
 if($_SESSION["t_cond"] == "ADMINISTRADOR") {
 } else {
-	echo"<script type=\"text/javascript\">alert('Usted no está Autorizado para Este Módulo....!'); window.location='inicio.php';</script>";
+    echo"<script type=\"text/javascript\">alert('Usted no está Autorizado para Este Módulo....!'); window.location='inicio.php';</script>";
 }
 // FIN DE LA SOLICITUD
 
-// Recivimos los Datos
-  // Proyecto
-  $proy_cod = $_SESSION['proy_cod'];
-  $proy_desc = $_SESSION['proy_desc'];
-  // Construcción Paredes (Longitud)
-  $pns_long = $_SESSION['pns_long'];
-  $peo_long = $_SESSION['peo_long'];
-  //*****************************************
-   // Construcción de Paredes (Altura) ***************************
-  if ( $altyz != " " ) {
-	  $alt_yz = $_SESSION['alt_yz'];
-	  $alt_yyz = $_SESSION['alt_yyz'];
-	  $_SESSION['alt_yz'];
-  } else {
-	  $alt_xz = $_SESSION['alt_xz'] + 2;
-	  $alt_xxz = $_SESSION['alt_xxz'];
-	  $_SESSION['alt_xz'];
-  }
-  // Fin de Altura
-  $pns_long = $_SESSION['pns_long'] + 2;
-  $peo_long = $_SESSION['peo_long'] + 2;
-  $pns_long = $_SESSION['pns_long'];
-  $peo_long = $_SESSION['peo_long'];
-  //*******************************************
-  // Paredes
-  // Norte - Componente Constructivo
-		$pn_modelo = $_SESSION['pn_modelo'];
-		$pn_par_desc = $_SESSION['pn_par_desc'];
-		$pn_capas = $_SESSION['pn_capas'];
-		$pn_bloque = $_SESSION['pn_bloque'];
-		$pn_dimensiones = $_SESSION['pn_dimensiones'];
-		$pn_par_esp = $_SESSION['pn_par_esp'];
-		$pn_par_dens = $_SESSION['pn_par_dens'];
-		$pn_par_cond = $_SESSION['pn_par_cond'];
-		$pn_par_calor = $_SESSION['pn_par_calor'];
-		// Pared Norte
-		if ($pn_par_cond < 1) {
-			$xcond_pared_n = number_format($pn_par_cond*10, 5, ".", "");
-		} else {
-			$xcond_pared_n = number_format($pn_par_cond/1000, 5, ".", "");
-		}
-		if ($pn_par_calor < 1) {
-			$xcp_pared_n = number_format($pn_par_calor*10, 5, ".", "");
-		} else {
-			$xcp_pared_n = number_format($pn_par_calor/10, 5, ".", "");
-		}
-		if ($pn_par_dens < 1) {
-			$xdens_pared_n = number_format($pn_par_dens*10, 5, ".", "");
-		} else {
-			$xdens_pared_n = number_format($pn_par_dens/1000, 5, ".", "");
-		}
-  //*******************************************
-  // Sur - Componente Constructivo
-		$ps_modelo = $_SESSION['ps_modelo'];
-		$ps_par_desc = $_SESSION['ps_par_desc'];
-		$ps_capas = $_SESSION['ps_capas'];
-		$ps_bloque = $_SESSION['ps_bloque'];
-		$ps_dimensiones = $_SESSION['ps_dimensiones'];
-		$ps_par_esp = $_SESSION['ps_par_esp'];
-		$ps_par_dens = $_SESSION['ps_par_dens'];
-		$ps_par_cond = $_SESSION['ps_par_cond'];
-		$ps_par_calor = $_SESSION['ps_par_calor'];
-		// Pared Sur
-		if ($ps_par_cond < 1) {
-			$xcond_pared_s = number_format($ps_par_cond*10, 5, ".", "");
-		} else {
-			$xcond_pared_s = number_format($ps_par_cond/1000, 5, ".", "");
-		}
-		if ($ps_par_calor < 1) {
-			$xcp_pared_s = number_format($ps_par_calor*10, 5, ".", "");
-		} else {
-			$xcp_pared_s = number_format($ps_par_calor/10, 5, ".", "");
-		}
-		if ($ps_par_dens < 1) {
-			$xdens_pared_s = number_format($ps_par_dens*10, 5, ".", "");
-		} else {
-			$xdens_pared_s = number_format($ps_par_dens/1000, 5, ".", "");
-		}
-  //*******************************************
-  // Este - Componente Constructivo
-		$pe_modelo = $_SESSION['pe_modelo'];
-		$pe_par_desc = $_SESSION['pe_par_desc'];
-		$pe_capas = $_SESSION['pe_capas'];
-		$pe_bloque = $_SESSION['pe_bloque'];
-		$pe_dimensiones = $_SESSION['pe_dimensiones'];
-		$pe_par_esp = $_SESSION['pe_par_esp'];
-		$pe_par_dens = $_SESSION['pe_par_dens'];
-		$pe_par_cond = $_SESSION['pe_par_cond'];
-		$pe_par_calor = $_SESSION['pe_par_calor'];
-		// Pared Este
-		if ($pe_par_cond < 1) {
-			$xcond_pared_e = number_format($pe_par_cond*10, 5, ".", "");
-		} else {
-			$xcond_pared_e = number_format($pe_par_cond/1000, 5, ".", "");
-		}
-		if ($pe_par_calor < 1) {
-			$xcp_pared_e = number_format($pe_par_calor*10, 5, ".", "");
-		} else {
-			$xcp_pared_e = number_format($pe_par_calor/10, 5, ".", "");
-		}
-		if ($pe_par_dens < 1) {
-			$xdens_pared_e = number_format($pe_par_dens*10, 5, ".", "");
-		} else {
-			$xdens_pared_e = number_format($pe_par_dens/1000, 5, ".", "");
-		}
-  //********************************************
-  // Oeste - Componente Constructivo
-		$po_modelo = $_SESSION['po_modelo'];
-		$po_par_desc = $_SESSION['po_par_desc'];
-		$po_capas = $_SESSION['po_capas'];
-		$po_bloque = $_SESSION['po_bloque'];
-		$po_dimensiones = $_SESSION['po_dimensiones'];
-		$po_par_esp = $_SESSION['po_par_esp'];
-		$po_par_dens = $_SESSION['po_par_dens'];
-		$po_par_cond = $_SESSION['po_par_cond'];
-		$po_par_calor = $_SESSION['po_par_calor'];
-		// Pared Este
-		if ($po_par_cond < 1) {
-			$xcond_pared_o = number_format($po_par_cond*10, 5, ".", "");
-		} else {
-			$xcond_pared_o = number_format($po_par_cond/1000, 5, ".", "");
-		}
-		if ($po_par_calor < 1) {
-			$xcp_pared_o = number_format($po_par_calor*10, 5, ".", "");
-		} else {
-			$xcp_pared_o = number_format($po_par_calor/10, 5, ".", "");
-		}
-		if ($po_par_dens < 1) {
-			$xdens_pared_o = number_format($po_par_dens*10, 5, ".", "");
-		} else {
-			$xdens_pared_o = number_format($po_par_dens/1000, 5, ".", "");
-		}
-  //********************************************
-  // Pared Interna
-  $PI = $_SESSION['PI'];
-  $PINS = $_SESSION['PINS'];
-  $PIEO = $_SESSION['PIEO'];
-  if ($PI == 1) {
-	  $_SESSION['piy'] = "1";
-	  $_SESSION['pix'] = "1";
-	  $piy = $_SESSION['piy'];
-	  $pix = $_SESSION['pix'];
-	  $NPI = $_SESSION['PINS'];
-	  // Componentes
-	  $pint_modelo = $_SESSION['pi_modelo'];
-	  $pi_desc = $_SESSION['pi_desc'];
-	  $pi_capas = $_SESSION['pi_capas'];
-	  $pi_bloque = $_SESSION['pi_bloque'];
-	  $pi_dimensiones = $_SESSION['pi_dimensiones'];
-	  // Capas
-	  $pi_esp = $_SESSION['pi_esp'];
-	  $pi_dens = $_SESSION['pi_dens'];
-	  $pi_cond = $_SESSION['pi_cond'];
-	  $pi_calor = $_SESSION['pi_calor'];
-	  if ($pi_cond < 1) {
-		  $xpi_cond = number_format($pi_cond*10, 5, ".", "");
-	  } else {
-		  $xpi_cond = number_format($pi_cond/1000, 5, ".", "");
-	  }
-	  if ($pi_calor < 1) {
-		  $xpi_calor = number_format($pi_calor*10, 5, ".", "");
-	  } else {
-		  $xpi_calor = number_format($pi_calor/1000, 5, ".", "");
-	  }
-	  if ($pi_dens < 1) {
-		  $xpi_dens = number_format($pi_dens*10, 5, ".", "");
-	  } else {
-		  $xpi_dens = number_format($pi_dens/1000, 5, ".", "");
-	  }
-  }
-	  // Fin Construcción Pared Interna
-  //*******************************************
-  // Puertas
-  $pn_puerta = $_SESSION['pn_puerta'];
-  if ( $pn_puerta == 1 ) {
-	  $pxi_n = $_SESSION['pxi_n'];
-	  $pe_n = $_SESSION['pe_n'];
-	  $ph_n = $_SESSION['ph_n'];
-	  $pn_puerta_dens = $_SESSION['pn_puerta_dens'];
-	  $pn_puerta_cond = $_SESSION['pn_puerta_cond'];
-	  $pn_puerta_calor = $_SESSION['pn_puerta_calor'];
-	  if ($pn_puerta_cond < 1) {
-		  $xpn_puerta_cond = number_format($pn_puerta_cond*10, 5, ".", "");
-	  } else {
-		  $xpn_puerta_cond = number_format($pn_puerta_cond/1000, 5, ".", "");
-	  }
-	  if ($pn_puerta_calor < 1) {
-		  $xpn_puerta_calor = number_format($pn_puerta_calor*10, 5, ".", "");
-	  } else {
-		  $xpn_puerta_calor = number_format($pn_puerta_calor/1000, 5, ".", "");
-	  }
-	  if ($pn_puerta_dens < 1) {
-		  $xpn_puerta_dens = number_format($pn_puerta_dens*10, 5, ".", "");
-	  } else {
-		  $xpn_puerta_dens = number_format($pn_puerta_dens/1000, 5, ".", "");
-	  }
-  }
-  $ps_puerta = $_SESSION['ps_puerta'];
-  if ( $ps_puerta == 1 ) {
-	  $pxi_s = $_SESSION['pxi_s'];
-	  $pe_s = $_SESSION['pe_s'];
-	  $ph_s = $_SESSION['ph_s'];
-	  $ps_puerta_dens = $_SESSION['ps_puerta_dens'];
-	  $ps_puerta_cond = $_SESSION['ps_puerta_cond'];
-	  $ps_puerta_calor = $_SESSION['ps_puerta_calor'];
-	  if ($ps_puerta_dens < 1) {
-		  $xps_puerta_dens = number_format($ps_puerta_dens*10, 5, ".", "");
-	  } else {
-		  $xps_puerta_dens = number_format($ps_puerta_dens/1000, 5, ".", "");
-	  }
-	  if ($ps_puerta_cond < 1) {
-		  $xps_puerta_cond = number_format($ps_puerta_cond*10, 5, ".", "");
-	  } else {
-		  $xps_puerta_cond = number_format($ps_puerta_cond/1000, 5, ".", "");
-	  }
-	  if ($ps_puerta_calor < 1) {
-		  $xps_puerta_calor = number_format($ps_puerta_calor*10, 5, ".", "");
-	  } else {
-		  $xps_puerta_calor = number_format($ps_puerta_calor/1000, 5, ".", "");
-	  }
-  }
-  $pe_puerta = $_SESSION['pe_puerta'];
-  if ( $pe_puerta == 1 ) {
-	  $pxi_e = $_SESSION['pxi_e'];
-	  $pe_e = $_SESSION['pe_e'];
-	  $ph_e = $_SESSION['ph_e'];
-	  $pe_puerta_dens = $_SESSION['pe_puerta_dens'];
-	  $pe_puerta_cond = $_SESSION['pe_puerta_cond'];
-	  $pe_puerta_calor = $_SESSION['pe_puerta_calor'];
-	  if ($pe_puerta_dens < 1) {
-		  $xpe_puerta_dens = number_format($pe_puerta_dens*10, 5, ".", "");
-	  } else {
-		  $xpe_puerta_dens = number_format($pe_puerta_dens/1000, 5, ".", "");
-	  }
-	  if ($pe_puerta_cond < 1) {
-		  $xpe_puerta_cond = number_format($pe_puerta_cond*10, 5, ".", "");
-	  } else {
-		  $xpe_puerta_cond = number_format($pe_puerta_cond/1000, 5, ".", "");
-	  }
-	  if ($pe_puerta_calor < 1) {
-		  $xpe_puerta_calor = number_format($pe_puerta_calor*10, 5, ".", "");
-	  } else {
-		  $xpe_puerta_calor = number_format($pe_puerta_calor/1000, 5, ".", "");
-	  }
-  }
-  $po_puerta = $_SESSION['po_puerta'];
-  if ( $po_puerta == 1 ) {
-	  $pxi_o = $_SESSION['pxi_o'];
-	  $pe_o = $_SESSION['pe_o'];
-	  $ph_o = $_SESSION['ph_o'];
-	  $po_puerta_dens = $_SESSION['po_puerta_dens'];
-	  $po_puerta_cond = $_SESSION['po_puerta_cond'];
-	  $po_puerta_calor = $_SESSION['po_puerta_calor'];
-	  if ($po_puerta_dens < 1) {
-		  $xpo_puerta_dens = number_format($po_puerta_dens*10, 5, ".", "");
-	  } else {
-		  $xpo_puerta_dens = number_format($po_puerta_dens/1000, 5, ".", "");
-	  }
-	  if ($po_puerta_cond < 1) {
-		  $xpo_puerta_cond = number_format($po_puerta_cond*10, 5, ".", "");
-	  } else {
-		  $xpo_puerta_cond = number_format($po_puerta_cond/1000, 5, ".", "");
-	  }
-	  if ($po_puerta_calor < 1) {
-		  $xpo_puerta_calor = number_format($po_puerta_calor*10, 5, ".", "");
-	  } else {
-		  $xpo_puerta_calor = number_format($po_puerta_calor/1000, 5, ".", "");
-	  }
-  }
-  $NPTAN = $_SESSION['NPTAN'];
-  $NPTAS = $_SESSION['NPTAS'];
-  $NPTAE = $_SESSION['NPTAE'];
-  $NPTAO = $_SESSION['NPTAO'];
-  //********************************************
-  // Ventana
-  $pn_ventana = $_SESSION['pn_ventana'];
-  if ( $pn_ventana == 1 ) {
-	  $vxi_n = $_SESSION['vxi_n'];
-	  $vyi_n = $_SESSION['vyi_n'];
-	  $ve_n = $_SESSION['ve_n'];
-	  $vh_n = $_SESSION['vh_n'];
-	  $pn_vent_dens = $_SESSION['pn_vent_dens'];
-	  $pn_vent_cond = $_SESSION['pn_vent_cond'];
-	  $pn_vent_calor = $_SESSION['pn_vent_calor'];
-	  if ($pn_vent_dens < 1) {
-		  $xpn_vent_dens = number_format($pn_vent_dens*10, 5, ".", "");
-	  } else {
-		  $xpn_vent_dens = number_format($pn_vent_dens/1000, 5, ".", "");
-	  }
-	  if ($pn_vent_cond < 1) {
-		  $xpn_vent_cond = number_format($pn_vent_cond*10, 5, ".", "");
-	  } else {
-		  $xpn_vent_cond = number_format($pn_vent_cond/1000, 5, ".", "");
-	  }
-	  if ($pn_vent_calor < 1) {
-		  $xpn_vent_calor = number_format($pn_vent_calor*10, 5, ".", "");
-	  } else {
-		  $xpn_vent_calor = number_format($pn_vent_calor/1000, 5, ".", "");
-	  }
-  }
-  $ps_ventana = $_SESSION['ps_ventana'];
-  if ( $ps_ventana == 1 ) {
-	  $vxi_s = $_SESSION['vxi_s'];
-	  $vyi_s = $_SESSION['vyi_s'];
-	  $ve_s = $_SESSION['ve_s'];
-	  $vh_s = $_SESSION['vh_s'];
-	  $ps_vent_dens = $_SESSION['ps_vent_dens'];
-	  $ps_vent_cond = $_SESSION['ps_vent_cond'];
-	  $ps_vent_calor = $_SESSION['ps_vent_calor'];
-	  if ($ps_vent_dens < 1) {
-		  $xps_vent_dens = number_format($ps_vent_dens*10, 5, ".", "");
-	  } else {
-		  $xps_vent_dens = number_format($ps_vent_dens/1000, 5, ".", "");
-	  }
-	  if ($ps_vent_cond < 1) {
-		  $xps_vent_cond = number_format($ps_vent_cond*10, 5, ".", "");
-	  } else {
-		  $xps_vent_cond = number_format($ps_vent_cond/1000, 5, ".", "");
-	  }
-	  if ($ps_vent_calor < 1) {
-		  $xps_vent_calor = number_format($ps_vent_calor*10, 5, ".", "");
-	  } else {
-		  $xps_vent_calor = number_format($ps_vent_calor/1000, 5, ".", "");
-	  }
-  }
-  $pe_ventana = $_SESSION['pe_ventana'];
-  if ( $pe_ventana == 1 ) {
-	  $vxi_e = $_SESSION['vxi_e'];
-	  $vyi_e = $_SESSION['vyi_e'];
-	  $ve_e = $_SESSION['ve_e'];
-	  $vh_e = $_SESSION['vh_e'];
-	  $pe_vent_dens = $_SESSION['pe_vent_dens'];
-	  $pe_vent_cond = $_SESSION['pe_vent_cond'];
-	  $pe_vent_calor = $_SESSION['pe_vent_calor'];
-	  if ($pe_vent_dens < 1) {
-		  $xpe_vent_dens = number_format($pe_vent_dens*10, 5, ".", "");
-	  } else {
-		  $xpe_vent_dens = number_format($pe_vent_dens/1000, 5, ".", "");
-	  }
-	  if ($pe_vent_cond < 1) {
-		  $xpe_vent_cond = number_format($pe_vent_cond*10, 5, ".", "");
-	  } else {
-		  $xpe_vent_cond = number_format($pe_vent_cond/1000, 5, ".", "");
-	  }
-	  if ($pe_vent_calor < 1) {
-		  $xpe_vent_calor = number_format($pe_vent_calor*10, 5, ".", "");
-	  } else {
-		  $xpe_vent_calor = number_format($pe_vent_calor*10, 5, ".", "");
-	  }
-  }
-  $po_ventana = $_SESSION['po_ventana'];
-  if ( $po_ventana == 1 ) {
-	  $vxi_o = $_SESSION['vxi_o'];
-	  $vyi_o = $_SESSION['vyi_o'];
-	  $ve_o = $_SESSION['ve_o'];
-	  $vh_o = $_SESSION['vh_o'];
-	  $po_vent_dens = $_SESSION['po_vent_dens'];
-	  $po_vent_cond = $_SESSION['po_vent_cond'];
-	  $po_vent_calor = $_SESSION['po_vent_calor'];
-	  if ($po_vent_dens < 1) {
-		  $xpo_vent_dens = number_format($po_vent_dens*10, 5, ".", "");
-	  } else {
-		  $xpo_vent_dens = number_format($po_vent_dens/1000, 5, ".", "");
-	  }
-	  if ($po_vent_cond < 1) {
-		  $xpo_vent_cond = number_format($po_vent_cond*10, 5, ".", "");
-	  } else {
-		  $xpo_vent_cond = number_format($po_vent_cond/1000, 5, ".", "");
-	  }
-	  if ($po_vent_calor < 1) {
-		  $xpo_vent_calor = number_format($po_vent_calor*10, 5, ".", "");
-	  } else {
-		  $xpo_vent_calor = number_format($po_vent_calor/1000, 5, ".", "");
-	  }
-  }
-  $NVNAN = $_SESSION['NVNAN'];
-  $NVNAS = $_SESSION['NVNAS'];
-  $NVNAE = $_SESSION['NVNAE'];
-  $NVNAO = $_SESSION['NVNAO'];
-  //********************************************
-  // Construcción Techo
-  $tpl_modelo = $_SESSION['tpl_modelo'];
-  $tpl_desc = $_SESSION['tpl_desc'];
-  $tpl_capas = $_SESSION['tpl_capas'];
-  $tpl_bloque = $_SESSION['tpl_bloque'];
-  $tpl_dims = $_SESSION['tpl_dims'];
-  // Capas
-  $tpl_esp = $_SESSION['tpl_esp'];
-  $tpl_dens = $_SESSION['tpl_dens'];
-  $tpl_cond = $_SESSION['tpl_cond'];
-  $tpl_calor = $_SESSION['tpl_calor'];
-  //********************************************
-  // Simulación
-  $titulo = $_SESSION['titulo'];
-  $ttsim  = $_SESSION['ttsim'];
-  $xpasot = $_SESSION['pasot'];
-  $or_desc = $_SESSION['or_desc'];
-  $or_img  = $_SESSION['or_img'];
-  $carpeta = $_SESSION['carpeta'];
-  $tec = $_SESSION['tec'];
-  $dat1 = $_SESSION['dat1'];
-  $dat2 = $_SESSION['dat2'];
-  //*********************************************
-  // Condiciones Meteorológicas
-  $nubosidad = $_SESSION['nubosidad'];
-  $cambaire = $_SESSION['cmbaire'];
-  $humrelat = $_SESSION['humrel'];
-  $velaire = $_SESSION['velaire'];
-  $cm_region = $_SESSION['cm_region'];
-  $cm_mes = $_SESSION['cm_mes'];
-  $cm_latitud = $_SESSION['cm_latitud'];
-  $cm_declinacion = $_SESSION['cm_declinacion'];
-  $cm_hlocal_hsolar = $_SESSION['hlocal_hsolar'];
-  $cm_tmin = $_SESSION['cm_tmin'];
-  $cm_tmin_alos = $_SESSION['cm_tmin_alos'];
-  $cm_tmax = $_SESSION['cm_tmax'];
-  $cm_tmax_alos = $_SESSION['cm_tmax_alos'];
-  $cm_norte = $_SESSION['cm_norte'];
-  $cm_norte_alos = $_SESSION['cm_norte_alos'];
-  $cm_sur = $_SESSION['cm_sur'];
-  $cm_sur_alos = $_SESSION['cm_sur_alos'];
-  $cm_este = $_SESSION['cm_este'];
-  $cm_este_alos = $_SESSION['cm_este_alos'];
-  $cm_oeste = $_SESSION['cm_oeste'];
-  $cm_oeste_alos = $_SESSION['cm_oeste_alos'];
-  $cm_techo = $_SESSION['cm_techo'];
-  $humrel = $humrelat / 100;
-  // Controles Avamzados
-  $capn_cb = $_SESSION['capn_cb'];
-  $capn_cr = $_SESSION['capn_cr'];
-  $caps_cb = $_SESSION['caps_cb'];
-  $caps_cr = $_SESSION['caps_cr'];
-  $cape_cb = $_SESSION['cape_cb'];
-  $cape_cr = $_SESSION['cape_cr'];
-  $capo_cb = $_SESSION['capo_cb'];
-  $capo_cr = $_SESSION['capo_cr'];
-  $catpl_cb = $_SESSION['catpl_cb'];
-  $catpl_cr = $_SESSION['catpl_cr'];
-  $capta_cr = $_SESSION['capta_cr'];
-  $cavna_cr = $_SESSION['cavna_cr'];
-  $monit = $_SESSION['monitoreo'];
-  if ( $monit == "1" ) {
-	  $xxi = 0.00;
-	  $xxj = 0.00;
-	  $xxk = 0.00;
-  } else {
-	  $xxi = $_SESSION['xxi'];
-	  $xxj = $_SESSION['xxj'];
-	  $xxk = $_SESSION['xxk'];
-  }
-  // Velocidades U.V.W.
-  $uvw = $_SESSION['uvw'];
-  if ($uvw =="1") {
-	  $xuvw = "1";
-	  $xxveluvw = $_SESSION['xveluvw'];
-  }else {
-	  $xuvw = "0";
-  }
-  //********************************************
-  // Presion
-  $psion = $_SESSION['psion'];
-  if ( $psion == "1" ) {
-	  $pres = "1";
-	  $presion = $_SESSION['presion'];
-  }
-  //********************************************
-  // Temperatura
-  $temp = $_SESSION['temp'];
-  if ( $temp == "1" ) {
-	  $tempe = "1";
-	  $temperatura = $_SESSION['temper'];
-  }
-  $EMIP1V = $_SESSION['EMIP1V'];
-  $EMITE = $_SESSION['EMITE'];
-  $EMIP3V = $_SESSION['EMIP3V'];
-  $EMIP4V = $_SESSION['EMIP4V'];
-  $EMIP5V = $_SESSION['EMIP5V'];
-  $EMIV = $_SESSION['EMIV'];
-  $EMIPU = $_SESSION['EMIPU'];
-  // ************************************************
-  // Nodos a Contabilizar
-  $xnodo_i = $_SESSION['nodo_i'] + 2;
-  $xnodo_j = $_SESSION['nodo_j'] + 2;
-  $xnodo_k = $_SESSION['nodo_k'] + 2;
-  $i = $xnodo_i;
-  $j = $xnodo_j;
-  $IJK = $xnodo_k;
-  $vci = $_SESSION['nodo_i'];
-  $vcj = $_SESSION['nodo_j'];
-  $vck = $_SESSION['nodo_k'];
-  $long_nodo_i =  $pns_long / $xnodo_i;
-  $long_nodo_j = $peo_long / $xnodo_j;
-  $long_nodo_k = $alt_yz / $xnodo_k;
-  $cara_i = $_SESSION['nodo_i'] + 1;
-  $cara_j = $_SESSION['nodo_j'] + 1;
-  $cara_k = $_SESSION['nodo_k'] + 1;
-  $dcara_i = $pns_long / $vci;
-  $dcara_j = $peo_long / $vcj;
-  $dcara_k = $alt_yz / $vck;
-  // ************************************************
-  // Datos de los Archivos .dat
- 
-######################################################
- ## Para "Inyectar" el Respaldo a la Base de datos
- ######################################################
- ## $inyecta = "mysql --user=$db_user --password=$db_pass --database=$db_name < /home/sitio/backups/db-XXXXXXX.sql ";
- ## $a = system($inyecta);
- ######################################################
- /*
-============
- Encabezado
-============
-*/
+//*****************************************
+// Construcción de Paredes (Altura) ***************************
+
+$humrel = $humrelat / 100;
+
+$monit = $_SESSION['monitoreo'];
+if ( $monit == "1" ) {
+    $xxi = 0.00;
+    $xxj = 0.00;
+    $xxk = 0.00;
+} else {
+    $xxi = $_SESSION['xxi'];
+    $xxj = $_SESSION['xxj'];
+    $xxk = $_SESSION['xxk'];
+}
+// Velocidades U.V.W.
+$uvw = $_SESSION['uvw'];
+if ($uvw =="1") {
+    $xuvw = "1";
+    $xxveluvw = $_SESSION['xveluvw'];
+}else {
+    $xuvw = "0";
+}
+//********************************************
+// Presion
+$psion = $_SESSION['psion'];
+if ( $psion == "1" ) {
+    $pres = "1";
+    $presion = $_SESSION['presion'];
+}
+//********************************************
+// Temperatura
+$temp = $_SESSION['temp'];
+if ( $temp == "1" ) {
+    $tempe = "1";
+    $temperatura = $_SESSION['temper'];
+}
+
+// ************************************************
+// Nodos a Contabilizar
+$xnodo_i = $_SESSION['nodo_i'] + 2;
+$xnodo_j = $_SESSION['nodo_j'] + 2;
+$xnodo_k = $_SESSION['nodo_k'] + 2;
+$i = $xnodo_i;
+$j = $xnodo_j;
+$IJK = $xnodo_k;
+$vci = $_SESSION['nodo_i'];
+$vcj = $_SESSION['nodo_j'];
+$vck = $_SESSION['nodo_k'];
+$long_nodo_i =  $pns_long / $xnodo_i;
+$long_nodo_j = $peo_long / $xnodo_j;
+$long_nodo_k = $alt_yz / $xnodo_k;
+$cara_i = $_SESSION['nodo_i'] + 1;
+$cara_j = $_SESSION['nodo_j'] + 1;
+$cara_k = $_SESSION['nodo_k'] + 1;
+$dcara_i = $pns_long / $vci;
+$dcara_j = $peo_long / $vcj;
+$dcara_k = $alt_yz / $vck;
+// ************************************************
+// Datos de los Archivos .dat
+
 header("Content-Type: text/html; charset=UTF-8");
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr"><head><title>Pre Procesador - Vivienda</title>';
@@ -541,27 +309,27 @@ echo '<link rel="stylesheet" type="text/css" href="css/calendario.css">';
 echo '<script type="text/javascript" src="js/jquery.js"></script>';
 echo '<script type="text/javascript" src="js/calendario.js"></script>';
 echo '<script type="text/javascript">
-		$(function(){
-				$("#fecha1").datepicker();
-				$("#fecha2").datepicker({
-					changeMonth:true,
-					changeYear:true,
-				});
-				$("#fecha3").datepicker({
-					changeMonth:true,
-					changeYear:true,
-					showOn: "button",
-					buttonImage: "css/images/ico.png",
-					buttonImageOnly: true,
-					showButtonPanel: true,
-				})
-				$("#fecha4").datepicker({
-					changeMonth:true,
-					changeYear:true,
-				});
-			})
-		</script>
-	 ';
+$(function(){
+    $("#fecha1").datepicker();
+    $("#fecha2").datepicker({
+        changeMonth:true,
+        changeYear:true,
+    });
+    $("#fecha3").datepicker({
+        changeMonth:true,
+        changeYear:true,
+        showOn: "button",
+        buttonImage: "css/images/ico.png",
+        buttonImageOnly: true,
+        showButtonPanel: true,
+    })
+    $("#fecha4").datepicker({
+        changeMonth:true,
+        changeYear:true,
+    });
+})
+</script>
+';
 /* Fin de la Función Calendario */
 // JavaScripy *********************************************************************
 echo '<script language="JavaScript" type="text/javascript">
@@ -569,44 +337,44 @@ echo '<script language="JavaScript" type="text/javascript">
 // Copyright 2016 bloguero-ec.
 // Usese cómo mas le convenga no elimine estas líneas (http://www.bloguero-ec.com)
 function show5(){
-if (!document.layers&&!document.all&&!document.getElementById)
-return
- 
- var Digital=new Date()
- var hours=Digital.getHours()
- var minutes=Digital.getMinutes()
- var seconds=Digital.getSeconds()
- 
-var dn="PM"
-if (hours<12)
-dn="AM"
-if (hours>12)
-hours=hours-12
-if (hours==0)
-hours=12
- 
- if (minutes<=9)
- minutes="0"+minutes
- if (seconds<=9)
- seconds="0"+seconds
-//<span id="IL_AD6" class="IL_AD">change</span> <span id="IL_AD11" class="IL_AD">font size</span> here to your desire
-myclock="<b>Hora:   "+hours+":"+minutes+":"
- +seconds+" "+dn+"</b>"
-if (document.layers){
-document.layers.liveclock.document.write(myclock)
-document.layers.liveclock.document.close()
+    if (!document.layers&&!document.all&&!document.getElementById)
+    return
+    
+    var Digital=new Date()
+    var hours=Digital.getHours()
+    var minutes=Digital.getMinutes()
+    var seconds=Digital.getSeconds()
+    
+    var dn="PM"
+    if (hours<12)
+    dn="AM"
+    if (hours>12)
+    hours=hours-12
+    if (hours==0)
+    hours=12
+    
+    if (minutes<=9)
+    minutes="0"+minutes
+    if (seconds<=9)
+    seconds="0"+seconds
+    //<span id="IL_AD6" class="IL_AD">change</span> <span id="IL_AD11" class="IL_AD">font size</span> here to your desire
+    myclock="<b>Hora:   "+hours+":"+minutes+":"
+    +seconds+" "+dn+"</b>"
+    if (document.layers){
+        document.layers.liveclock.document.write(myclock)
+        document.layers.liveclock.document.close()
+    }
+    else if (document.all)
+    liveclock.innerHTML=myclock
+    else if (document.getElementById)
+    document.getElementById("liveclock").innerHTML=myclock
+    setTimeout("show5()",1000)
 }
-else if (document.all)
-liveclock.innerHTML=myclock
-else if (document.getElementById)
-document.getElementById("liveclock").innerHTML=myclock
-setTimeout("show5()",1000)
- }
- 
- 
+
+
 window.onload=show5
-  
- </script>';
+
+</script>';
 // IN DE LA HORA ****************************************************************************
 echo '</head>';
 // Body
@@ -626,8 +394,8 @@ echo '			<tr>';
 echo '				<td width="100%" align="right">';
 echo '					<div class="grid_7" align="right">';
 echo '				    	<a href="inicio.php" class="dashboard-mod" target="">
-			            			    	<span>Salir..</span>
-							</a>';
+<span>Salir..</span>
+</a>';
 echo '				  	</div>';
 echo '				</td>';
 echo '			</tr>';
@@ -685,38 +453,39 @@ echo '			  <td align="left" colspan="2"><font face="Comic Sans MS,arial,verdana"
 echo '			</tr>';
 echo '			<tr>';
 echo '			  <td width="20%" align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>Volumen de Control:</b></font></td>';
-echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.$vci.' / J: '.$vcj.' / K: '.$vck.'</font></td>';  
+echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.$vci.' / J: '.$vcj.' / K: '.$vck.'</font></td>';
 echo '			</tr>';
 echo '			<tr>';
 echo '			  <td width="20%" align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>Datos de Nodos:</b></font></td>';
 if ( $altyz != " " ) {
-	$SKij = round($altyz);
-echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.$i.' / J: '.$j.' / K: '.$IJK.'</font></td>';  
+    $SKij = round($altyz);
+    echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.$i.' / J: '.$j.' / K: '.$IJK.'</font></td>';
 } else {
-	$SKij = round($alt_xz);
-echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.$i.' / J: '.$j.' / K: '.$IJK.'</font></td>';  
+    $SKij = round($alt_xz);
+    echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.$i.' / J: '.$j.' / K: '.$IJK.'</font></td>';
 }
 echo '			</tr>';
 echo '			<tr>';
 echo '			  <td width="20%" align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>Nodo de Monitoreo:</b></font></td>';
 if ($monit == 1) {
-echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.($i/2).' / J: '.($j/2).' / K: '.round(($IJK/2)).'</font></td>'; 
+    echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.($i/2).' / J: '.($j/2).' / K: '.round(($IJK/2)).'</font></td>';
 } else {
-if ($monit == 2) {
-echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.$xxi.' / J: '.$xxj.' / K: '.round($xxk).'</font></td>'; 
-}}
+    if ($monit == 2) {
+        echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.$xxi.' / J: '.$xxj.' / K: '.round($xxk).'</font></td>';
+    }
+}
 echo '			</tr>';
 echo '			<tr>';
 echo '			  <td width="20%" align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>Distancia entre Nodos:</b></font></td>';
-echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.number_format($long_nodo_i, 2, ".", "").' / J: '.number_format($long_nodo_j, 2, ".", "").' / K: '.number_format($long_nodo_k, 2, ".", "").'</font></td>';  
+echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.number_format($long_nodo_i, 2, ".", "").' / J: '.number_format($long_nodo_j, 2, ".", "").' / K: '.number_format($long_nodo_k, 2, ".", "").'</font></td>';
 echo '			</tr>';
 echo '			<tr>';
 echo '			  <td width="20%" align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>Caras:</b></font></td>';
-echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.$cara_i.' / J: '.$cara_j.' / K: '.$cara_k.'</font></td>';  
+echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.$cara_i.' / J: '.$cara_j.' / K: '.$cara_k.'</font></td>';
 echo '			</tr>';
 echo '			<tr>';
 echo '			  <td width="20%" align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>Distancia entre Caras:</b></font></td>';
-echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.number_format($dcara_i, 2, ".", "").' / J: '.number_format($dcara_j, 2, ".", "").' / K: '.number_format($dcara_k, 2, ".", "").'</font></td>';  
+echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">I: '.number_format($dcara_i, 2, ".", "").' / J: '.number_format($dcara_j, 2, ".", "").' / K: '.number_format($dcara_k, 2, ".", "").'</font></td>';
 echo '			</tr>';
 echo '			<tr>';
 echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>Archivo Procesado:</b></font></td>';
@@ -724,539 +493,166 @@ echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", 
 
 // Proceso de Archivo  de Propiedades
 // Creamos la Carpeta del Archivo .dat
-if (!file_exists($carpeta)) {
-    mkdir($carpeta, 0777, true);
+// Asignado permisos de lectura, escritura y ejecucion a todos los usuarios
+if (!file_exists("../"$carpeta)) {
+    mkdir("../" . $carpeta, 0777, true);
 }
-// Tomamos los datos de los Nodos
-$nodo = 0.5;
-$nod_ini = 1; // Piso
-$nod_fin = $IJK; // Techo
-$nod_i_ini = 1; // Piso Pared Norte - Sur (3)
-$nod_i_fin = $i; // Techo Pared Norte - Sur (4)
-$nod_j_ini = 1; // Piso Pared Este - Oeste (3)
-$nod_j_fin = $j; // Techo Pared Este - Oeste (3)
-$nod_k_ini = 1; // Piso
-$nod_k_fin = $IJK; // Techo
-// Variables de Casa
-$aire = 0;
-$pared = 1;
-$ventana = 2;
-$piso = 3;
-$techo = 4;
-$puerta = 5;
-$pared_int = 8;
 
-// Techo
-if ($tpl_cond < 1) {
-	$xcond_pl = number_format($tpl_cond*10, 5, ".", "");
-} else {
-	$xcond_pl = number_format($tpl_cond/1000, 5, ".", "");
+// Crear archivos .dat (propiedades
+
+$ancho_volumen = $peo_long/$nodo_i; //volumen de control eje X
+$largo_volumen = $pns_long/$nodo_j; //largo  Volumen de control eje Y
+$alto_volumen = $alt_yz/$nodo_k;
+
+$i = $nodo_i;
+$j = $nodo_j;
+$k = $nodo_k;
+
+$file_properties = fopen("$carpeta" ."/" . $dat2 . ".dat", "w");
+
+write_to_file($file_properties, "I", "J", "K", "TIPO", "COND", "CP", "DENSIDAD");
+
+
+for ($Si = 1; $Si <= $nodo_i; $Si = $Si + 1) { // Ciclo de las Paredes Norte - Sur
+    for ($Sj = 1; $Sj <= $nodo_j; $Sj = $Sj + 1) { // Ciclo de las Paredes Este - Oeste
+        for ($Sk = 1; $Sk <= $nodo_k; $Sk = $Sk + 1) { //Ciclo de la Altura
+            
+            if ($Sk == $k) { //Techo
+                write_techo($Si, $Sj, $Sk);
+            } elseif ($Sk == 1) { //Piso
+                write_piso($Si, $Sj, $Sk);
+            } elseif (is_pared_interna_active("PINS") and is_pared_interna($Si, $piy, $ancho_volumen)) {
+                write_pared_interna($Si, $Sj, $Sk, "interna");
+            } elseif (is_pared_interna_active("PIEO") and is_pared_interna($Sj, $pix, $largo_volumen)) {
+                write_pared_interna($Si, $Sj, $Sk, "interna");
+            } elseif ($Si == 1 and $Sk > 1) { //Pared Oeste
+                if (is_vent_active("oeste") and is_vent($largo_volumen*$Sj, $alto_volumen*$Sk, $vxi_o, $vyi_o, $ve_o, $vh_o)) { //Chequear ventana
+                    write_vent($Si, $Sj, $Sk, "oeste");
+                }
+                elseif (is_puerta_active("oeste") and is_puerta($largo_volumen*$Sj, $alto_volumen*$Sk, $pxi_o, $pe_o, $ph_o)) { //Chequear Puerta
+                    write_puerta($Si, $Sj, $Sk, "oeste");
+                }
+                else {
+                    write_pared($Si, $Sj, $Sk, "oeste");
+                }
+            } elseif ($Si == $i) { //Pared Este
+                if (is_vent_active("este") and is_vent($largo_volumen*$Sj, $alto_volumen*$Sk, $vxi_e, $vyi_e, $ve_e, $vh_e)) { //Chequear ventana
+                    write_vent($Si, $Sj, $Sk, "este");
+                }
+                elseif  (is_puerta_active("este") and is_puerta($largo_volumen*$Sj, $alto_volumen*$Sk, $pxi_e, $pe_e, $ph_e)) { //Chequear Puerta
+                    write_puerta($Si, $Sj, $Sk, "este");
+                }
+                else {
+                    write_pared($Si, $Sj, $Sk, "este");
+                }
+            } elseif ($Sj == 1) { //Pared Sur
+                if (is_vent_active("sur") and is_vent($ancho_volumen*$Si, $alto_volumen*$Sk, $vxi_s, $vyi_s, $ve_s, $vh_s)) { //Chequear ventana
+                    write_vent($Si, $Sj, $Sk, "sur");
+                }
+                elseif  (is_puerta_active("sur") and is_puerta($ancho_volumen*$Si, $alto_volumen*$Sk, $pxi_s, $pe_s, $ph_s)) { //Chequear Puerta
+                    write_puerta($Si, $Sj, $Sk, "sur");
+                }
+                else {
+                    write_pared($Si, $Sj, $Sk, "sur");
+                }
+            } elseif ($Sj == $j) { //Pared Norte
+                if (is_vent_active("norte") and is_vent($ancho_volumen*$Si, $alto_volumen*$Sk, $vxi_n, $vyi_n, $ve_n, $vh_n)) { //Chequear ventana
+                    write_vent($Si, $Sj, $Sk, "norte");
+                }
+                elseif ( (is_puerta_active("norte") and is_puerta($ancho_volumen*$Si, $alto_volumen*$Sk, $pxi_n, $pe_n, $ph_n))) { //Chequear Puerta
+                    write_puerta($Si, $Sj, $Sk, "norte");
+                }
+                else {
+                    write_pared($Si, $Sj, $Sk, "norte");
+                }
+            } else { //Volumen de aire general
+                write_aire($Si, $Sj, $Sk);
+            }
+        }
+    }
 }
-if ($tpl_calor < 1) {
-	$xcp_tpl = number_format($tpl_calor*10, 5, ".", "");
-} else {
-	$xcp_tpl = number_format($tpl_calor/1000, 5, ".", "");
-}
-if ($tpl_dens < 1) {
-	$xdens_tpl = number_format($tpl_dens*10, 5, ".", "");
-} else {
-	$xdens_tpl = number_format($tpl_dens/1000, 5, ".", "");
-}
-//********************************************************
-// Piso
-$cond_piso = "8.83600E-01";
-$cp_piso = "9.35000E-01";
-$dens_piso = "1.21752E+03";
-// Aire
-$cond_aire = "2.60000E-02";
-$cp_aire = "1.06300E+00";
-$dens_aire = "1.22300E+00";
-// Distancias entre nodos
-$dnodo_i = $i-1;
-$dnodo_j = $j-1;
-$dnodo_k = $IJK-1;
-// Distancias entre nodos
-$dcara_i = $i-2;
-$dcara_j = $j-2;
-$dcara_k = $IJK-2;
-//*******************************
-$tot = (1008.00 * 1000) / 1000000;
-$numa = number_format($tot, 5, ".", "");
-// Crear archivos .dar (propiedades
-$propiedades = fopen("$carpeta/$dat2.dat","w"); 
-fwrite($propiedades, "I". "             ". "J". "             " ."K". "             ". "TIPO" . "          ". "COND". "            ". "CP" . "            ". "DENSIDAD". "\r\n");
-for ($Si = 1; $Si <= $i; $Si = $Si + 1) { // Ciclo de las Paredes Norte - Sur
-  for ($Sj = 1; $Sj <= $j; $Sj = $Sj + 1) { // Ciclo de las Paredes Este - Oeste
-    for ($Sk = 1; $Sk <= $IJK; $Sk = $Sk + 1) { // Ciclo del Altura
-		// Construccion de Nodos Pared I Pared J Altura K
-		if ( $Si == 1 and $Sj == 1 and $Sk == 1 ) {
-			fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-		} else {
-		if ( $Si == 1 and $Sj == 1 and $Sk > 1 and $Sk < $IJK ) {
-			fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-		} else {
-		if ( $Si == 1 and $Sj == 1 and $Sk == $IJK ) {
-			fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-		// Fin del Inicio Nodos I J K
-		// Construcción Nodos J I K
-		} else { // Pared Oeste
-		if ( $Si == 1 and $Sj >= 2 and $Sj < $j and $Sk == 1 ) {
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-			}
-		} else {
-		if ( $Si == 1 and $Sj >= 2 and $Sj < $j and $Sk < $IJK ) {
-			if ($Sj < 10) {
-				if ($Sj == 3 and $Sk == 2) {
-					if ($po_puerta == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $puerta. "            ". $xpo_puerta_cond."E-01". "     ". $xpo_puerta_calor."E-01". "   ". $xpo_puerta_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-				} else {
-				if ($Sj == 3 and $Sk == 3) {
-					if ($po_puerta == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $puerta. "            ". $xpo_puerta_cond."E-01". "     ". $xpo_puerta_calor."E-01". "   ". $xpo_puerta_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-				} else {
-				if ($Sj == 5 and $Sk == 3) {
-					if ($po_ventana == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $ventana. "            ". $xpo_vent_cond."E-01". "     ". $xpo_vent_calor."E-01". "   ". $xpo_vent_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-				} else {
-				if ($Sj == 5 and $Sk == 4) {
-					if ($po_ventana == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $ventana. "            ". $xpo_vent_cond."E-01". "     ". $xpo_vent_calor."E-01". "   ". $xpo_vent_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-				} else {
-					fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-				}}}}
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-			}
-		} else {
-		if ( $Si == 1 and $Sj >= 2 and $Sj < $j and $Sk == $IJK ) {
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-			}// Fin Pared Oeste
-		} else {
-		if ( $Si == 1 and $Sj == $j and $Sk == 1 ) {
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-			}
-		} else {
-		if ( $Si == 1 and $Sj == $j and $Sk < $IJK ) {
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-			}
-		} else {
-		if ( $Si == 1 and $Sj == $j and $Sk == $IJK ) {
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-			}
-		// Fin Nodos J I K
-		// Construcción Nodos I J K
-		} else { // Pared Norte
-		if ( $Si >= 2 and $Si < $i and $Sj == 1 and  $Sk == 1 ) {
-			fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-		} else {
-		if ( $Si >= 2 and $Si < $i and $Sj == 1 and  $Sk < $IJK ) {
-			if ($Si == 3 and $Sk == 2) {
-					if ($pn_puerta == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $puerta. "            ". $xpo_puerta_cond."E-01". "     ". $xpo_puerta_calor."E-01". "   ". $xpo_puerta_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-			} else {
-			if ($Si == 3 and $Sk == 3) {
-					if ($pn_puerta == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $puerta. "            ". $xpo_puerta_cond."E-01". "     ". $xpo_puerta_calor."E-01". "   ". $xpo_puerta_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-			} else {
-			if ($Si == 5 and $Sk == 3) {
-					if ($pn_ventana == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $ventana. "            ". $xpo_vent_cond."E-01". "     ". $xpo_vent_calor."E-01". "   ". $xpo_vent_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-			} else {
-			if ($Si == 5 and $Sk == 4) {
-					if ($pn_ventana == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $ventana. "            ". $xpo_vent_cond."E-01". "     ". $xpo_vent_calor."E-01". "   ". $xpo_vent_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-			}}}}
-		} else {
-		if ( $Si >= 2 and $Si < $i and $Sj == 1 and  $Sk == $IJK ) {
-			fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-		} else { // Fin Pared Norte
-		if ( $Si == $i and $Sj == 1 and  $Sk == 1 ) {
-			fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-		} else {
-		if ( $Si == $i and $Sj == 1 and  $Sk < $IJK ) {
-			fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-		} else {
-		if ( $Si == $i and $Sj == 1 and  $Sk == $IJK ) {
-			fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-		} else { // Pared Este
-		if ( $Si == $i and $Sj >= 2 and $Sj < $j and  $Sk == 1 ) {
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-			}
-		} else {
-		if ( $Si == $i and $Sj >= 2 and $Sj < $j and  $Sk < $IJK ) {
-			if ($Sj < 10) {
-				if ($Si == $i and $Sj == 3 and $Sk == 2) {
-					if ($pe_puerta == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $puerta. "            ". $xpe_puerta_cond."E-01". "     ". $xpe_puerta_calor."E-01". "   ". $xpe_puerta_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-				}else {
-				if ($Si == $i and $Sj == 3 and $Sk == 3) {
-					if ($pe_puerta == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $puerta. "            ". $xpe_puerta_cond."E-01". "     ". $xpe_puerta_calor."E-01". "   ". $xpe_puerta_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-				} else {
-				if ($Si == $i and $Sj == 5 and $Sk == 3) {
-					if ($pe_ventana == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $ventana. "            ". $xpe_vent_cond."E-01". "     ". $xpe_vent_calor."E-01". "   ". $xpe_vent_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-				} else {
-				if ($Si == $i and $Sj == 5 and $Sk == 4) {
-					if ($pe_ventana == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $ventana. "            ". $xpe_vent_cond."E-01". "     ". $xpe_vent_calor."E-01". "   ". $xpe_vent_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-				} else {
-					fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-				}}}}
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-			}
-		} else {
-		if ( $Si == $i and $Sj >= 2 and $Sj < $j and  $Sk == $IJK ) {
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-			}
-		} else { // Fin Pared Este
-		if ( $Si == $i and $Sj == $j and $Sk == 1 ) {
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-			}
-		} else {
-		if ( $Si == $i and $Sj == $j and $Sk < $IJK ) {
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-			}
-		} else {
-		if ( $Si == $i and $Sj == $j and $Sk == $IJK ) {
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-			}
-		// Fin Nodos I J K
-		// Construcción Nodos Internos Entre I J K
-		} else { // Parte Interna de la Casa
-		if ( ($Si >= 2 and $Si < $i) and ($Sj >= 2 and $Sj < $j) and $Sk == 1 ){
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-			}
-		} else {
-		if ( ($Si >= 2 and $Si < $i) and ($Sj >= 2 and $Sj < $j) and $Sk < $IJK ){
-			if ($Sj < 10) {
-				if (($Si >= 4 and $Si < $i) and ($Sj >= 2 and $Sj < 10) and ($Sk >= 2 and $Sk <= $IJK)) {
-					if ($PI == 1) {
-						fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $pared_int. "            ". $xpi_cond."E-01". "     ". $xpi_calor."E-01". "   ". $xpi_dens ."E+03". "\r\n");
-					} else {
-						fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $aire. "            ". $cond_aire. "     ". $cp_aire. "   ". $dens_aire. "\r\n");
-					}
-				} else {
-					fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $aire. "            ". $cond_aire. "     ". $cp_aire. "   ". $dens_aire. "\r\n");
-				}
-			} else {
-				if (($Si >= 4 and $Si < $i) and ($Sj >= 10 and $Sj < $j) and ($Sk >= 2 and $Sk <= $IJK)) {
-					if ($PI == 1) {
-						fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $pared_int. "            ". $xpi_cond."E-01". "     ". $xpi_calor."E-01". "   ". $xpi_dens ."E+03". "\r\n");
-					} else {
-						fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $aire. "            ". $cond_aire. "     ". $cp_aire. "   ". $dens_aire. "\r\n");
-					}
-				} else {
-					fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $aire. "            ". $cond_aire. "     ". $cp_aire. "   ". $dens_aire. "\r\n");
-				}
-			}
-		} else {
-		if ( ($Si >= 2 and $Si < $i) and ($Sj >= 2 and $Sj < $j) and $Sk == $IJK ){
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-			} // Fin  Parte Interna de la Casa
-		} else { // Pared Sur
-		if ( ($Si >= 2 and $Si < $i) and ($Sj == $j) and $Sk == 1 ){
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $piso. "            ". $cond_piso. "     ". $cp_piso. "   ". $dens_piso. "\r\n");
-			}
-		} else {
-		if ( $Si >= 2 and $Si < $i and $Sj == $j and $Sk < $IJK ){
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-			} else {
-				if ($Si == 3 and $Sj == $j and $Sk == 2) {
-					if ($po_puerta == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $puerta. "            ". $xps_puerta_cond."E-01". "     ". $xps_puerta_calor."E-01". "   ". $xps_puerta_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-				} else {
-				if ($Si == 3 and $Sj == $j and $Sk == 3) {
-					if ($po_puerta == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $puerta. "            ". $xps_puerta_cond."E-01". "     ". $xps_puerta_calor."E-01". "   ". $xps_puerta_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-				} else {
-				if ($Si == 5 and $Sj == $j and $Sk == 3) {
-					if ($po_ventana == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $ventana. "            ". $xps_vent_cond."E-01". "     ". $xps_vent_calor."E-01". "   ". $xps_vent_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-				} else {
-				if ($Si == 5 and $Sj == $j and $Sk == 4) {
-					if ($po_ventana == 1) {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $ventana. "            ". $xps_vent_cond."E-01". "     ". $xps_vent_calor."E-01". "   ". $xps_vent_dens."E+03". "\r\n");
-					} else {
-					  fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-					}
-				} else {
-					fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $pared. "            ". $xcond_pared_n."E-01". "     ". $xcp_pared_n."E-01". "   ". $xdens_pared_n."E+03". "\r\n");
-				}}}}
-			}
-		} else {
-		if ( ($Si >= 2 and $Si < $i) and ($Sj == $j) and $Sk == $IJK ){
-			if ($Sj < 10) {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "              ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-			} else {
-				fwrite($propiedades, $Si. "             ". $Sk. "             " .$Sj. "             ". $techo. "            ". $xcond_pl."E-01". "     ". $xcp_tpl."E-01". "   ". $xdens_tpl."E+03". "\r\n");
-			} // Fin Pared Sur
-		}}}}}}}}}}}}}}}}}}}}}}}}}}}
-		
-	} // Fin de k
-  } // Fin de j
-} // Fin de I
-fwrite($propiedades, "EMIP1V, EMITE, EMIP3V, EMIP4V, EMIP5V, EMIV, EMIPU" . "\r\n");
-fwrite($propiedades, $EMIP1V.",    ".$EMITE.",   ".$EMIP3V.",    ".$EMIP4V.",    ".$EMIP5V.",    ".$EMIV.",   ".$EMIPU. "\r\n" );
-fwrite($propiedades, "ICBTE,ICBK1,ICBN1,ICBI1,ICBL1". "\r\n" );
-fwrite($propiedades, "  2 ,    2 ,    2 ,    2 ,    2 ". "\r\n" );
-fwrite($propiedades, "RO1,RO2,RO3,RO4,RO5,REV,REP ". "\r\n" );
-fwrite($propiedades, $capn_cr.",".$caps_cr.",".$cape_cr.",".$capo_cr.",".$catpl_cr.",".$capta_cr.",".$cavna_cr. "\r\n" );
-fwrite($propiedades, " ICAL,ANUB,ACH". "\r\n" );
-fwrite($propiedades, " 1 , ".$nubosidad.", ".$cambaire. "\r\n" );
-fwrite($propiedades, "TFMIN,  TFMAX, ITMIN,ITMAX". "\r\n" );
-fwrite($propiedades, $cm_tmin.", ".$cm_tmax.", ".$cm_tmin_alos.", ".$cm_tmax_alos. "\r\n" );
-fwrite($propiedades, "  LAT,    DEC,   DIF, Q1MAXV, TMAX1,Q3MAXV,TMAX3,Q4MAXV,TMAX4,Q5MAXV,TMAX5,QSMAXH,VAIR,  HR". "\r\n" );
-fwrite($propiedades, " ".$cm_latitud.", ".$cm_declinacion.", ".$cm_hlocal_hsolar.", ".$cm_este.", ".$cm_este_alos.", ".$cm_oeste.", ".$cm_oeste_alos.", ".$cm_norte.", ".$cm_norte_alos.", ".$cm_sur.", ".$cm_sur_alos.", ".$cm_techo.", ".$velaire.", ".$humrel. "\r\n" );
-fclose($propiedades ); 
+
+write_to_file($file_properties, "EMIP1V", "EMITE", "EMIP3V", "EMIP4V", "EMIP5V", "EMIV", "EMIPU");
+write_to_file($file_properties, $EMIP1V, $EMITE, $EMIP3V, $EMIP4V, $EMIP5V, $EMIV ,$EMIPU);
+write_to_file($file_properties, "ICBTE","ICBK1", "ICBN1", "ICBI1","ICBL1");
+write_to_file($file_properties, 2, 2, 2, 2, 2);
+write_to_file($file_properties, "RO1", "RO2", "RO3", "RO4", "RO5", "REV", "REP");
+write_to_file($file_properties, $capn_cr, $caps_cr, $cape_cr, $capo_cr, $catpl_cr, $capta_cr, $cavna_cr);
+write_to_file($file_properties, "ICAL", "ANUB", "ACH");
+write_to_file($file_properties, "1", $nubosidad, $cambaire);
+write_to_file($file_properties, "TFMIN",  "TFMAX", "ITMIN", "ITMAX");
+write_to_file($file_properties, $cm_tmin, $cm_tmax, $cm_tmin_alos, $cm_tmax_alos);
+write_to_file($file_properties, "LAT", "DEC","DIF", "Q1MAXV", "TMAX1", "Q3MAXV", "TMAX3", "Q4MAXV", "TMAX4", "Q5MAXV", "TMAX5", "QSMAXH", "VAIR", "HR" );
+write_to_file($file_properties, $cm_latitud, $cm_declinacion, $cm_hlocal_hsolar, $cm_este, $cm_este_alos, $cm_oeste, $cm_oeste_alos, $cm_norte, $cm_norte_alos, $cm_sur, $cm_sur_alos, $cm_techo, $velaire, $humrel);
+fclose($file_properties);
 echo '			</tr>';
 echo '			<tr>';
 echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>Archivo Procesado:</b></font></td>';
 echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d">Nodales</font></td>';
 echo '			</tr>';
 echo '		</table>';
-// Crear archivos .dar (propiedades
-$nodales = fopen("$carpeta/$dat1.dat","w"); 
-fwrite($nodales, "TITULO". "\r\n");
-fwrite($nodales, '"'.$proy_desc.'"'. "\r\n");
-fwrite($nodales, "Numero de Iteraciones, Algoritmo de Solucion". "\r\n");
-fwrite($nodales, " 1             3". "\r\n");
-fwrite($nodales, "Nombre de Archivo Grafico". "\r\n");
-fwrite($nodales, '"'.$tec.'"'. "\r\n");
-fwrite($nodales, "Tiempo Total, Paso de Tiempo". "\r\n");
-fwrite($nodales,   $ttsim."         ,              ". $xpasot. "\r\n");
-fwrite($nodales, "Variables logicas". "\r\n");
-fwrite($nodales, "IcalUVW, IcalP, IcalT". "\r\n");
-fwrite($nodales, "T T T". "\r\n");
-fwrite($nodales, "Factores de Relajacion". "\r\n");
-fwrite($nodales, "RelaxUVW, RelaxP, RelaxT". "\r\n");
-fwrite($nodales, " 0.5 ,   0.2 ,   0.5 ". "\r\n");
-fwrite($nodales, "Punto de Monitoreo". "\r\n");
-fwrite($nodales, "  I  ,  J  ,  K". "\r\n");
+// Crear archivos .dat (propiedades)
+$nodales = fopen("$carpeta/$dat1.dat","w");
+//Es a partir de aqui que se escribe el segundo archivo
+write_to_file($nodales, "TITULO");
+write_to_file($nodales, $proy_desc);
+write_to_file($nodales, "Numero de Iteraciones", "Algoritmo de Solucion");
+write_to_file($nodales, "1", "3");
+write_to_file($nodales, "Nombre de Archivo Grafico");
+write_to_file($nodales, $tec);
+write_to_file($nodales, "Tiempo Total", "Paso de Tiempo");
+write_to_file($nodales,  $ttsim, $xpasot);
+write_to_file($nodales, "Variables logicas");
+write_to_file($nodales, "IcalUVW", "IcalP", "IcalT");
+write_to_file($nodales, "T", "T", "T");
+write_to_file($nodales, "Factores de Relajacion");
+write_to_file($nodales, "RelaxUVW", "RelaxP", "RelaxT");
+write_to_file($nodales, "0.5", "0.2", "0.5");
+write_to_file($nodales, "Punto de Monitoreo");
+write_to_file($nodales, "I", "J", "K");
+
 if ($monit == 1) {
-fwrite($nodales, " ".($i/2)." , ".($j/2)." , ".round(($IJK/2)). "\r\n");
+    fwrite($nodales, " ".($i/2)." , ".($j/2)." , ".round(($IJK/2)). "\r\n");
 } else {
-if ($monit == 2) {
-fwrite($nodales, " ".$xxi." , ".$xxj." , ".round($xxk). "\r\n");
-}}
-fwrite($nodales, "CARAS". "\r\n");
-fwrite($nodales, "I ".$cara_i. "\r\n");
-fwrite($nodales, "J ".$cara_k. "\r\n");
-fwrite($nodales, "K ".$cara_j. "\r\n");
-/*$dnodo_i = $pns_long;
-$dnodo_j = $peo_long;
-$dnodo_k = $vck;*/
-$xdcara_i = number_format($dcara_i, 2, ".", "");
-fwrite($nodales, "0.00E+00". "\r\n");
-// Cara I
-for ($Ci = 2; $Ci <= $cara_i; $Ci = $Ci + 1) {
-	if ($Ci == 2) {
-		$xy = $pns_long / ($cara_i-1);
-		if ($xy < 1) {
-			fwrite($nodales, number_format($xy, 2, ".", "")."E+00". "\r\n");
-		} else {
-			fwrite($nodales, number_format($xy*1, 2, ".", "")."E+00". "\r\n");
-		}
-		$tcar_i = ($pns_long / $vci) + ($pns_long / $vci);
-	} else {
-	if ($Ci > 2 and $Ci < $cara_i) {
-		fwrite($nodales, number_format($tcar_i, 2, ".", "")."E+00". "\r\n");
-		$tcar_i = $tcar_i + ($pns_long / $vci);
-	} else {
-	if ($Ci == $cara_i) {
-		if ($Ci < 10) {
-			fwrite($nodales, number_format($pns_long*1, 2, ".", "")."E+00". "\r\n");
-		} else {
-			fwrite($nodales, number_format(($pns_long*1)/10, 2, ".", "")."E+01". "\r\n");
-		}
-	}}}
+    if ($monit == 2) {
+        fwrite($nodales, " ".$xxi." , ".$xxj." , ".round($xxk). "\r\n");
+    }
 }
-// Fin Cara I
-// Cara K
-fwrite($nodales, "0.00E+00". "\r\n");
-for ($Ck = 2; $Ck <= $cara_k; $Ck = $Ck + 1) {
-	if ($Ck == 2) {
-		fwrite($nodales, number_format($alt_yz / $vck, 2, ".", "")."E+00". "\r\n");
-		$tcar_k = ($alt_yz / $vck) + ($alt_yz / $vck);
-	} else {
-	if ($Ck > 2 and $Ck < $cara_k) {
-		fwrite($nodales, number_format($tcar_k, 2, ".", "")."E+00". "\r\n");
-		$tcar_k = $tcar_k + ($alt_yz / $vck);
-	} else {
-	if ($Ck == $cara_k) {
-		if ($Ck < 10) {
-			fwrite($nodales, number_format($alt_yz*1, 2, ".", "")."E+00". "\r\n");
-		} else {
-			fwrite($nodales, number_format(($alt_yz*1)/10, 2, ".", "")."E+01". "\r\n");
-		}
-	}}}
+write_to_file($nodales, "CARAS");
+write_to_file($nodales, "I", $cara_i);
+write_to_file($nodales, "J", $cara_k);
+write_to_file($nodales, "K", $cara_j);
+
+
+for ($Ci = 0; $Ci < $cara_i; $Ci = $Ci + 1) {
+    write_to_file($nodales, format_number($Ci*$ancho_volumen));
 }
-// Cara J
-fwrite($nodales, "0.00E+00". "\r\n");
-for ($Cj = 2; $Cj <= $cara_j; $Cj = $Cj + 1) {
-	if ($Cj == 2) {
-		$yx = $peo_long / $vcj;
-		if ($yx < 1) {
-			fwrite($nodales, number_format($yx, 2, ".", "")."E+00". "\r\n");
-		} else {
-			fwrite($nodales, number_format($yx*1, 2, ".", "")."E+00". "\r\n");
-		}
-		$tcar_j = ($peo_long / $vcj) + ($peo_long / $vcj);
-	} else {
-	if ($Cj > 2 and $Cj < $cara_j) {
-		fwrite($nodales, number_format($tcar_j, 2, ".", "")."E+00". "\r\n");
-		$tcar_j = $tcar_j + ($peo_long / $vcj);
-	} else {
-	if ($Cj == $cara_j) {
-			if ($Cj < 10) {
-				fwrite($nodales, number_format($peo_long*1, 2, ".", "")."E+00". "\r\n");
-			} else {
-				fwrite($nodales, number_format(($peo_long*1)/10, 2, ".", "")."E+01". "\r\n");
-			}
-	}}}
+
+for ($Ck = 0; $Ck < $cara_k; $Ck = $Ck + 1) {
+    write_to_file($nodales, format_number($Ck*$alto_volumen));
+}
+
+for ($Cj = 0; $Cj < $cara_j; $Cj = $Cj + 1) {
+    write_to_file($nodales, format_number($Cj*$largo_volumen));
 }
 // Fin Cara J
-fwrite($nodales, "NODOS". "\r\n");
-fwrite($nodales, "I ".$vci. "\r\n");
-fwrite($nodales, "J ".$vck. "\r\n");
-fwrite($nodales, "K ".$vcj. "\r\n");
-// Nodo I
-for ($Ni = 1; $Ni <= $vci; $Ni = $Ni + 1) {
-	if ($Ni == 1) {
-		fwrite($nodales, number_format(($pns_long / $vci)/2, 2, ".", "")."E+00". "\r\n");
-		$tnod_i = (($pns_long / $vci)/2) + ($pns_long / $vci);
-	} else {
-	if ($Ni > 1 and $Ni < $vci) {
-		fwrite($nodales, number_format($tnod_i, 2, ".", "")."E+00". "\r\n");
-		$tnod_i = $tnod_i + ($pns_long / $vci);
-	} else {
-	if ($Ni == $vci) {
-			$tnod = $pns_long - (($pns_long / $vci)/2);
-			fwrite($nodales, number_format($tnod*1, 2, ".", "")."E+00". "\r\n");
-	}}}
+write_to_file($nodales, "NODOS");
+write_to_file($nodales, "I ", $vci);
+write_to_file($nodales, "J ", $vck);
+write_to_file($nodales, "K ", $vcj);
+
+for ($Ni = 0; $Ni <= $vci; $Ni = $Ni + 1) {
+    write_to_file($nodales, format_number((0.5 + $Ni)*$ancho_volumen));
 }
-// Fin Nodo I
-// Nodo K
-for ($Nk = 1; $Nk <= $vck; $Nk = $Nk + 1) {
-	if ($Nk == 1) {
-		fwrite($nodales, number_format(($alt_yz / $vck)/2, 2, ".", "")."E+00". "\r\n");
-		$tnod_k = (($alt_yz / $vck)/2) + ($alt_yz / $vck);
-	} else {
-	if ($Nk > 1 and $Nk < $vck) {
-		fwrite($nodales, number_format($tnod_k, 2, ".", "")."E+00". "\r\n");
-		$tnod_k = $tnod_k + ($alt_yz / $vck);
-	} else {
-	if ($Nk == $vck) {
-			$tnod = $alt_yz - (($alt_yz / $vck)/2);
-			fwrite($nodales, number_format($tnod*1, 2, ".", "")."E+00". "\r\n");
-	}}}
+for ($Nk = 0; $Nk <= $vck; $Nk = $Nk + 1) {
+    write_to_file($nodales, format_number((0.5 + $Nk)*$alto_volumen));
 }
-// Fin Nodo K
-// Nodo J
-for ($Nj = 1; $Nj <= $vcj; $Nj = $Nj + 1) {
-	if ($Nj == 1) {
-		fwrite($nodales, number_format(($peo_long / $vcj)/2, 2, ".", "")."E+00". "\r\n");
-		$tnod_j = (($peo_long / $vcj)/2) + ($peo_long / $vcj);
-	} else {
-	if ($Nj > 1 and $Nj < $vcj) {
-		fwrite($nodales, number_format($tnod_j, 2, ".", "")."E+00". "\r\n");
-		$tnod_j = $tnod_j + ($peo_long / $vcj);
-	} else {
-	if ($Nj == $vcj) {
-			$tnod = ($peo_long - (($peo_long / $vcj)/2));
-			fwrite($nodales, number_format($tnod*1, 2, ".", "")."E+00". "\r\n");
-	}}}
+
+for ($Nj = 0; $Nj <= $vcj; $Nj = $Nj + 1) {
+    write_to_file($nodales, format_number((0.5 + $Nj)*$largo_volumen));
 }
-// Fin Nodo J
-fclose($nodales );
+fclose($nodales);
+
 echo '		<p>&nbsp;</p>';
 echo '		<table width="60%" height="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#f2f2f2">';
 echo '		  <tr>';
@@ -1278,27 +674,28 @@ echo '		<p>&nbsp;</p>';
 echo '</div>'; // Fin del art-main
 echo '</body>'; // Fin del Body
 /*	==================================
-	Protegiendo Pagina de Acceso
-	==================================
+Protegiendo Pagina de Acceso
+==================================
 */
-echo '<Script language=JavaScript>'.
-	 'function right(e) {'.
-	 'if (navigator.appName == "Netscape" && (e.which == 3 || e.which == 2)){'.
-	 'alert("Lo sentimos mucho..! PÃ¡gina Restringida");'.
-	 'return false;'.
-	 '}'.
-	 'else if (navigator.appName == "Microsoft Internet Explorer" &&'.
-	 '(event.button == 2 || event.button == 3)) {'.
-	 'alert("Lo sentimos mucho..! PÃ¡gina Restringida");'.
-	 'return false;'.
-	 '}'.
-	 'return true;'.
-	 '}'.
-	 'document.onmousedown=right;'.
-	 'if (document.layers) window.captureEvents(Event.MOUSEDOWN);'.
-	 'window.onmousedown=right;'.
-	 '</script>';
-echo '</html>';
-mysqli_close($con);
-
-?>
+echo '<script language=JavaScript>'.
+'function right(e) {'.
+    'if (navigator.appName == "Netscape" && (e.which == 3 || e.which == 2)){'.
+        'alert("Lo sentimos mucho..! PÃ¡gina Restringida");'.
+        'return false;'.
+        '}'.
+        'else if (navigator.appName == "Microsoft Internet Explorer" &&'.
+        '(event.button == 2 || event.button == 3)) {'.
+            'alert("Lo sentimos mucho..! PÃ¡gina Restringida");'.
+            'return false;'.
+            '}'.
+            'return true;'.
+            '}'.
+            'document.onmousedown=right;'.
+            'if (document.layers) window.captureEvents(Event.MOUSEDOWN);'.
+            'window.onmousedown=right;'.
+            '</script>';
+            echo '</html>';
+            
+            
+            ?>
+            

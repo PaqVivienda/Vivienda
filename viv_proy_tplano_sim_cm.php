@@ -623,7 +623,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pn_par_cond.'</b></font></td>';
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pn_par_calor.'</b></font></td>';
 echo '			</tr>'; // Finalización de la Pared Norte
-				$res_pn = mysqli_query($sql_pn_cap, $con);
+				$res_pn = mysqli_query($con, $sql_pn_cap);
 				while ($row_pn = mysqli_fetch_array($res_pn, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
@@ -652,7 +652,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$ps_par_cond.'</b></font></td>';
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$ps_par_calor.'</b></font></td>';
 echo '			</tr>'; // Finalización de la Pared Sur
-				$res_ps = mysqli_query($sql_ps_cap, $con);
+				$res_ps = mysqli_query($con, $sql_ps_cap);
 				while ($row_ps = mysqli_fetch_array($res_ps, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
@@ -681,7 +681,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pe_par_cond.'</b></font></td>';
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pe_par_calor.'</b></font></td>';
 echo '			</tr>'; // Finalización de la Pared Este
-				$res_pe = mysqli_query($sql_pe_cap, $con);
+				$res_pe = mysqli_query($con, $sql_pe_cap);
 				while ($row_pe = mysqli_fetch_array($res_pe, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
@@ -710,7 +710,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$po_par_cond.'</b></font></td>';
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$po_par_calor.'</b></font></td>';
 echo '			</tr>'; // Finalización de la Pared Oeste
-				$res_po = mysqli_query($sql_po_cap, $con);
+				$res_po = mysqli_query($con, $sql_po_cap);
 				while ($row_po = mysqli_fetch_array($res_po, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
@@ -764,7 +764,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pi_cond.'</b></font></td>';
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pi_calor.'</b></font></td>';
 echo '			</tr>';
-				$res_pi = mysqli_query($sql_pi_cap, $con);
+				$res_pi = mysqli_query($con, $sql_pi_cap);
 				while ($row_pi = mysqli_fetch_array($res_pi, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
@@ -790,7 +790,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pi_cond.'</b></font></td>';
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pi_calor.'</b></font></td>';
 echo '			</tr>';
-				$res_pi = mysqli_query($sql_pi_cap, $con);
+				$res_pi = mysqli_query($con, $sql_pi_cap);
 				while ($row_pi = mysqli_fetch_array($res_pi, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
@@ -1019,7 +1019,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$tpl_cond.'</b></font></td>';
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$tpl_calor.'</b></font></td>';
 echo '			</tr>';
-				$res_tpl = mysqli_query($sql_tpl_cap, $con);
+				$res_tpl = mysqli_query($con, $sql_tpl_cap);
 				while ($row_tpl = mysqli_fetch_array($res_tpl, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_tpl['proy_descripcion'].'</b></font></td>';

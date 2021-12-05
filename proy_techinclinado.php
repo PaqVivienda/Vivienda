@@ -135,16 +135,16 @@ function registrar_puerta($nombre_puerta, $connection) {
     }
 }
 
-function registrar_techo() {
+function registrar_techo($connection) {
 
-    guardar_elemento('ti_modelo',  $_POST['xtech_incl_cod'); 
-    $sql_ti_modelo = mysqli_query($con, "SELECT * FROM proy_techo WHERE id = '$ti_modelo'");
+    guardar_elemento('ti_modelo',  $_POST['xtech_incl_cod']); 
+    $sql_ti_modelo = mysqli_query($connection, "SELECT * FROM proy_techo WHERE id = '" . $_POST['xtech_incl_cod']);
     $row_ti_modelo = mysqli_fetch_array($sql_ti_modelo,  MYSQLI_ASSOC);
-    guardar_elemento('ti_desc', $row_ti_modelo['proy_descripcion');
-    guardar_elemento('ti_esp',  $row_ti_modelo['proy_espesor');
-    guardar_elemento('ti_dens',  $row_ti_modelo['proy_densidad');
-    guardar_elemento('ti_cond',  $row_ti_modelo['proy_conductividad');
-    guardar_elemento('ti_calor',  $row_ti_modelo['proy_calorespecifico');
+    guardar_elemento('ti_desc', $row_ti_modelo['proy_descripcion']);
+    guardar_elemento('ti_esp',  $row_ti_modelo['proy_espesor']);
+    guardar_elemento('ti_dens',  $row_ti_modelo['proy_densidad']);
+    guardar_elemento('ti_cond',  $row_ti_modelo['proy_conductividad']);
+    guardar_elemento('ti_calor',  $row_ti_modelo['proy_calorespecifico']);
     
 }
 
@@ -211,7 +211,7 @@ if ( $_POST['tip_techo'] == "dato2" ) {
     // Componentes de Construcción
     // Fin de Paredes
     // Construcción Techo
-    registrar_techo()
+    registrar_techo($con);
     
     // Construcción de Puertas
     registrar_puerta("pn", $con);

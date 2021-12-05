@@ -236,7 +236,9 @@ nav ul li div ul .titulo a {
 linear-gradient( 90deg, #b30303, #530000); ">90deg
 linear-gradient( 75deg, #b30303, #530000); ">75deg
 linear-gradient( 45deg, #b30303, #530000); ">45deg*/
-.titulo.degradado {background: linear-gradient( 90deg, #b30303, #530000);90deg; color:#000;}
+.titulo.degradado {
+	background: linear-gradient( 90deg, #b30303, #530000, 90deg);
+	color:#000;}
 
 nav ul li div ul .titulo a:hover {
 	background:none;

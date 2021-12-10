@@ -21,11 +21,11 @@ function load_table($table, $connection)
 
         foreach($table_fields_array as $key => $value)
         {
-            if (($key > 0) and ($key <(count($table_fields_array) - 1 )))
+            if ($key <(count($table_fields_array) - 1 ))
             {
                 $empty_string .="$value[0], ";
             }	       
-            elseif ($key > 0)
+            else
             {	
                 $empty_string .=$value[0];
             }

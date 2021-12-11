@@ -34,9 +34,8 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
   $pn_par_dens = $_SESSION['pn_par_dens'];
   $pn_par_cond = $_SESSION['pn_par_cond'];
   $pn_par_calor = $_SESSION['pn_par_calor'];
-  $sql_pn_capas = mysqli_query("SELECT * FROM proy_matcomp where proy_cod_comp = '$pn_modelo'");
-  $res_pn_capas = mysqli_query($sql_pn_capas, $con);
-  while ($row_pn_capas = mysqli_fetch_array($res_pn_capas, MYSQLI_ASSOC)){
+  $sql_pn_capas = mysqli_query($con, "SELECT * FROM proy_matcomp where proy_cod_comp = '$pn_modelo'");
+  while ($row_pn_capas = mysqli_fetch_array($sql_pn_capas, MYSQLI_ASSOC)){
 	  $pn_desc_capa = $row_pn_capas['proy_desc_capa'];
 	  $pn_esp_capa = $row_pn_capas['proy_espesor'];
 	  $pn_dens_capa = $row_pn_capas['proy_densidad'];
@@ -477,7 +476,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pn_par_cond.'</b></font></td>';
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pn_par_calor.'</b></font></td>';
 echo '			</tr>'; // Finalización de la Pared Norte
-				$res_pn = mysqli_query($sql_pn_cap, $con);
+				$res_pn = mysqli_query($con, $sql_pn_cap);
 				while ($row_pn = mysqli_fetch_array($res_pn, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
@@ -509,7 +508,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$ps_par_cond.'</b></font></td>';
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$ps_par_calor.'</b></font></td>';
 echo '			</tr>'; // Finalización de la Pared Sur
-				$res_ps = mysqli_query($sql_ps_cap, $con);
+				$res_ps = mysqli_query($con, $sql_ps_cap);
 				while ($row_ps = mysqli_fetch_array($res_ps, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
@@ -541,7 +540,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pe_par_cond.'</b></font></td>';
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$pe_par_calor.'</b></font></td>';
 echo '			</tr>'; // Finalización de la Pared Este
-				$res_pe = mysqli_query($sql_pe_cap, $con);
+				$res_pe = mysqli_query($con, $sql_pe_cap);
 				while ($row_pe = mysqli_fetch_array($res_pe, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
@@ -573,7 +572,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$po_par_cond.'</b></font></td>';
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$po_par_calor.'</b></font></td>';
 echo '			</tr>'; // Finalización de la Pared Oeste
-				$res_po = mysqli_query($sql_po_cap, $con);
+				$res_po = mysqli_query($con, $sql_po_cap);
 				while ($row_po = mysqli_fetch_array($res_po, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td>&nbsp;</td>';
@@ -633,19 +632,8 @@ if ( $tip_techo == "dato3" ) {
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$alt_yxzk.'</i></b></font></td>';
 }}}
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$pi_sep.'</i></b></font></td>';
-echo '			  <td align="left"><a href="" title="'.$po_par_desc.'"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.substr($po_par_desc,0,42).'</b></font></a></td>';
-echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$po_par_esp.'</b></font></td>';
-echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$po_par_dens.'</b></font></td>';
-echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$po_par_cond.'</b></font></td>';
-echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$po_par_calor.'</b></font></td>';
-echo '			</tr>';
-				$res_pi = mysqli_query($sql_pi_cap, $con);
+				$res_pi = mysqli_query($con, $sql_pi_cap);
 				while ($row_pi = mysqli_fetch_array($res_pi, MYSQLI_ASSOC)){
-					echo '<tr>';
-					echo '<td>&nbsp;</td>';
-					echo '<td>&nbsp;</td>';
-					echo '<td>&nbsp;</td>';
-					echo '<td>&nbsp;</td>';
 					echo '<td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_desc_capa'].'</b></font></td>';
 					echo '<td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_espesor'].'</b></font></td>';
 					echo '<td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_densidad'].'</b></font></td>';
@@ -865,7 +853,7 @@ echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3"
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$ti_cond.'</b></font></td>';
 echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$ti_calor.'</b></font></td>';
 echo '			</tr>';
-				$res_ti = mysqli_query($sql_ti_cap, $con);
+				$res_ti = mysqli_query($con, $sql_ti_cap);
 				while ($row_ti = mysqli_fetch_array($res_ti, MYSQLI_ASSOC)){
 					echo '<tr>';
 					echo '<td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_ti['proy_descripcion'].'</b></font></td>';

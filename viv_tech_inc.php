@@ -527,7 +527,7 @@ echo '			<td align="center" colspan="4" bgcolor="#0000CC" height="40"><font face
 echo '		  </tr>';
 echo '		  <tr>';
 echo '			  		<td align="center">';
-echo '						<select name="xpint_pared_cod" type="text" size="1" id="sel_teinc">';
+echo '						<select name="xpi_pared_cod" type="text" size="1" id="sel_teinc">';
 $res_pared = mysqli_query($con, $sql_pared);
 while ($row_pared = mysqli_fetch_array($res_pared, MYSQLI_ASSOC)){
 	echo '<option value="'.$row_pared['proy_modelo'].'">'.$row_pared['proy_descripcion'].'</option>' . "\n";
@@ -551,7 +551,7 @@ echo '			  		<td align="center">';
 echo '						<select name="xtech_incl_cod" type="text" size="1" id="sel_teinc">';
 $res_techo = mysqli_query($con, $sql_techo);
 while ($row_techo = mysqli_fetch_array( $res_techo, MYSQLI_ASSOC)){
-	echo '<option value="'.$row_techo['id'].'">'.$row_techo['proy_descripcion'].'</option>' . "\n";
+	echo '<option value="'.$row_techo['proy_cod'].'">'.$row_techo['proy_descripcion'].'</option>' . "\n";
 }
 echo '						</select>';
 echo '					</td>';

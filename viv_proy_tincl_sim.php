@@ -13,7 +13,7 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
 	echo"<script type=\"text/javascript\">alert('Usted no está Autorizado para Este Módulo....!'); window.location='inicio.php';</script>";
 }
 // FIN DE LA SOLICITUD
-
+include('conexion.php');
 // Recivimos los Datos
   // Proyecto
   $proy_cod_incl = $_SESSION['proy_cod'];
@@ -189,11 +189,11 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
   $pn_vent_cond = $_SESSION['pn_vent_cond'];
   $pn_vent_calor = $_SESSION['pn_vent_calor'];
   //******
-  $pn_recub_desc = $_SESSION['pn_recub_desc'];
-  $pn_recub_esp = $_SESSION['pn_recub_esp'];
-  $pn_recub_dens = $_SESSION['pn_recub_dens'];
-  $pn_recub_cond = $_SESSION['pn_recub_cond'];
-  $pn_recub_calor = $_SESSION['pn_recub_calor'];
+  // $pn_recub_desc = $_SESSION['pn_recub_desc'];
+  // $pn_recub_esp = $_SESSION['pn_recub_esp'];
+  // $pn_recub_dens = $_SESSION['pn_recub_dens'];
+  // $pn_recub_cond = $_SESSION['pn_recub_cond'];
+  // $pn_recub_calor = $_SESSION['pn_recub_calor'];
   // Pared Oeste
   $po_altura = $_SESSION['pnseo_alt'];
   $po_long = $_SESSION['peo_long'];
@@ -216,11 +216,11 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
   $po_vent_cond = $_SESSION['po_vent_cond'];
   $po_vent_calor = $_SESSION['po_vent_calor'];
   //*****
-  $po_recub_desc = $_SESSION['po_recub_desc'];
-  $po_recub_esp = $_SESSION['po_recub_esp'];
-  $po_recub_dens = $_SESSION['po_recub_dens'];
-  $po_recub_cond = $_SESSION['po_recub_cond'];
-  $po_recub_calor = $_SESSION['po_recub_calor'];
+  // $po_recub_desc = $_SESSION['po_recub_desc'];
+  // $po_recub_esp = $_SESSION['po_recub_esp'];
+  // $po_recub_dens = $_SESSION['po_recub_dens'];
+  // $po_recub_cond = $_SESSION['po_recub_cond'];
+  // $po_recub_calor = $_SESSION['po_recub_calor'];
   // Pared Este
   $pe_altura = $_SESSION['pnseo_alt'];
   $pe_long = $_SESSION['peo_long'];
@@ -243,11 +243,11 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
   $pe_vent_cond = $_SESSION['pe_vent_cond'];
   $pe_vent_calor = $_SESSION['pe_vent_calor'];
   //******
-  $pe_recub_desc = $_SESSION['pe_recub_desc'];
-  $pe_recub_esp = $_SESSION['pe_recub_esp'];
-  $pe_recub_dens = $_SESSION['pe_recub_dens'];
-  $pe_recub_cond = $_SESSION['pe_recub_cond'];
-  $pe_recub_calor = $_SESSION['pe_recub_calor'];
+  // $pe_recub_desc = $_SESSION['pe_recub_desc'];
+  // $pe_recub_esp = $_SESSION['pe_recub_esp'];
+  // $pe_recub_dens = $_SESSION['pe_recub_dens'];
+  // $pe_recub_cond = $_SESSION['pe_recub_cond'];
+  // $pe_recub_calor = $_SESSION['pe_recub_calor'];
   // Pared Sur ******
   $ps_altura = $_SESSION['pnseo_alt'];
   $ps_long = $_SESSION['pns_long'];
@@ -270,11 +270,11 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
   $ps_vent_cond = $_SESSION['ps_vent_cond'];
   $ps_vent_calor = $_SESSION['ps_vent_calor'];
   //*****
-  $ps_recub_desc = $_SESSION['ps_recub_desc'];
-  $ps_recub_esp = $_SESSION['ps_recub_esp'];
-  $ps_recub_dens = $_SESSION['ps_recub_dens'];
-  $ps_recub_cond = $_SESSION['ps_recub_cond'];
-  $ps_recub_calor = $_SESSION['ps_recub_calor'];
+  // $ps_recub_desc = $_SESSION['ps_recub_desc'];
+  // $ps_recub_esp = $_SESSION['ps_recub_esp'];
+  // $ps_recub_dens = $_SESSION['ps_recub_dens'];
+  // $ps_recub_cond = $_SESSION['ps_recub_cond'];
+  // $ps_recub_calor = $_SESSION['ps_recub_calor'];
   // Techo
   // Construcción de Techo
 	$ti_modelo = $_SESSION['ti_modelo'];
@@ -289,7 +289,7 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
 	$ti_calor = $_SESSION['ti_calor'];
 	// Fin de Construcción de Techo
 // Conectamos con las Tablas
-  include('conexion.php');
+
   $sql_or = "SELECT * FROM proy_orientacion";
   $sql_cm = "SELECT * FROM proy_cm";
 

@@ -43,5 +43,5 @@ echo '		</p>';
 echo '		<input type="hidden" name="_glpi_csrf_token" value="91813e8ed9b44456277fd955ded7e7fc">';
 echo '  </form>';
 echo '<script type="text/javascript" >
-document.getElementById("login_name").focus();</script></div><div class="error"><noscript><p>You must activate the JavaScript function of your browser</p></noscript></div><div id="display-login"></div></div><div id="footer-login"><a href="http://glpi-project.org/" title="Powered By Teclib">Universidad del Zulia <br />Facultad de Ingeniería <br />Escuela de Mecánica <br />Pre - Procesador Vivienda version 3.0 Copyright (C) 2019 por Grecia Pana / Jesús Medina. <br />Copyright (C) 2019 Pre - Procesador Vivienda</a></div></script><</html>';
+document.getElementById("login_name").focus();</script></div><div class="error"><noscript><p>You must activate the JavaScript function of your browser</p></noscript></div><div id="display-login"></div></div><div id="footer-login"><a href="http://glpi-project.org/" title="Powered By Teclib">Universidad del Zulia <br />Facultad de Ingeniería <br />Escuela de Mecánica <br />Pre - Procesador Vivienda version 3.0 Copyright (C) 2019 por Grecia Pana / Jesús Medina. <br />Copyright (C) 2019 Pre - Procesador Vivienda</a></div></script></html>';
 ?>

@@ -16,7 +16,7 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
 
 // Recivimos los Datos
 // Proyecto
-$proy_cod_incl = $_SESSION['proy_cod'];
+$proy_cod_incl = $_SESSION['cod_proy'];
 $proy_desc_incl = $_SESSION['proy_desc'];
 // ********
 // Construcción de Paredes (Longitud y Altura)
@@ -71,20 +71,11 @@ $po_par_calor = $_SESSION['po_par_calor'];
 // Fin Oeste
 // Altura
 $tip_techo = $_SESSION['tip_techo'];
+$alt_yxzi = $_SESSION['alt_yxz1'];
+$alt_yxzj = $_SESSION['alt_yxz2'];
+$alt_yxzk = $_SESSION['alt_yxz3'];
 
-if ($tip_techo == "dato1" ) {
-  $alt_yxzi = $_SESSION['alt_yxi'];
-  $alt_yxzj = $_SESSION['alt_yxj'];
-  $alt_yxzk = $_SESSION['alt_yxk'];
-} elseif ($tip_techo == "dato2" ) {
-  $alt_yxzi = $_SESSION['alt_yxi'];
-  $alt_yxzj = 0.00;
-  $alt_yxzk = $_SESSION['alt_yxk'];
-}elseif ($tip_techo == "dato3" ) {
-  $alt_yxzi = $_SESSION['alt_yxi'];
-  $alt_yxzj = 0.00;
-  $alt_yxzk = $_SESSION['alt_yxk'];
-}
+
 if ($_SESSION['alt_yz'] != "" ) {
   $pnsalt  = $_SESSION['alt_yz'];
 } else {
@@ -95,15 +86,16 @@ if ($_SESSION['alt_yz'] != "" ) {
 // Construcción Pared Interna
 $pi_y = $_SESSION['piy'];
 $pi_x = $_SESSION['pix'];
+
 if ( $pi_y > 0 ) {
   $pi_desc = "Norte - Sur";
   $pi_long = $peo_lomg;
-  $pi_alt =  $pnsalt;
+  $pi_alt =  "";
   $pi_sep = $pi_y;
 } elseif ( $pi_x > 0 ) {
   $pi_desc = "Este - Oeste";
   $pi_long = $pns_long;
-  $pi_alt =  $pnsalt;
+  $pi_alt =  "";
   $pi_sep = $pi_x;
 }
 

@@ -230,7 +230,7 @@ if (!isset($_SESSION["password"])) {
 include('conexion.php');
 
 guardar_elemento('cod_proy', $_POST['xproy_cod_incl']);
-$sql_proy_cod = mysqli_query($con, "SELECT * FROM proy_proyecto where proy_cod = '$proy_cod'");
+$sql_proy_cod = mysqli_query($con, "SELECT * FROM proy_proyecto where proy_cod = '$cod_proy'");
 $row_proy_cod = mysqli_fetch_array($sql_proy_cod);
 guardar_elemento('proy_desc', $row_proy_cod['proy_desc']);
 

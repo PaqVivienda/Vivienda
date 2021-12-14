@@ -168,7 +168,7 @@ echo '<Script language=JavaScript>'.
 echo '</html>';
 include("conexion.php");
 extract($_POST);
-if ($action == "upload") {
+if (isset($action) and ($action == "upload")) {
 	$archivo = $_FILES['file']['tmp_name'];
     $row = 1; 
     $fp = fopen ($archivo,"r"); 

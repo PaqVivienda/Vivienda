@@ -15,7 +15,7 @@ include('conexion.php');
 $conteo = $_SESSION['b_res'];
 $codigo = $_POST['login_codigo'];
 $descripcion = $_POST['login_desc'];
-$fecha = date();
+$fecha = date("d/m/Y");
 $cod_tech = $_POST['techo_pi'];
 if ( $cod_tech == "001" ) {
 	$desc_tech = "Techo Inclinado";

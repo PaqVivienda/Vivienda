@@ -236,7 +236,9 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
 
 //*****************************************
 // Construcción de Paredes (Altura) ***************************
-
+$humrelat = $_POST['xhumrel'];
+$cambaire = $_POST['xcambioaire'];
+$xpasot = $_POST['xpasot'];
 $humrel = $humrelat / 100;
 
 $monit = $_SESSION['monitoreo'];
@@ -508,7 +510,7 @@ $i = $nodo_i;
 $j = $nodo_j;
 $k = $nodo_k;
 
-$file_properties = fopen("$carpeta" ."/" . $dat2 . ".dat", "w");
+$file_properties = fopen("../" . "$carpeta" ."/" . $dat2 . ".dat", "w");
 
 write_to_file($file_properties, "I", "J", "K", "TIPO", "COND", "CP", "DENSIDAD");
 
@@ -592,7 +594,7 @@ echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="3", 
 echo '			</tr>';
 echo '		</table>';
 // Crear archivos .dat (propiedades)
-$nodales = fopen("$carpeta/$dat1.dat","w");
+$nodales = fopen( "../" . "$carpeta/$dat1.dat","w");
 //Es a partir de aqui que se escribe el segundo archivo
 write_to_file($nodales, "TITULO");
 write_to_file($nodales, $proy_desc);

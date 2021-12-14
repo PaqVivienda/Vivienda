@@ -3155,6 +3155,4 @@ echo '<Script language=JavaScript>'.
 	 'window.onmousedown=right;'.
 	 '</script>';
 echo '</html>';
-mysqli_close($con);
-
 ?>

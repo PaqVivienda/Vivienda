@@ -31,7 +31,7 @@ include('conexion.php');
   $pn_par_dens = $_SESSION['pn_par_dens'];
   $pn_par_cond = $_SESSION['pn_par_cond'];
   $pn_par_calor = $_SESSION['pn_par_calor'];
-  $sql_pn_capas = mysqli_query($con, "SELECT * FROM proy_matcomp where proy_cod_comp = '$pn_modelo'");
+  $sql_pn_capas = "SELECT * FROM proy_matcomp where proy_cod_comp = '$pn_modelo'";
   $res_pn_capas = mysqli_query($con, $sql_pn_capas);
   while ($row_pn_capas = mysqli_fetch_array($res_pn_capas, MYSQLI_ASSOC)){
 	  $pn_desc_capa = $row_pn_capas['proy_desc_capa'];

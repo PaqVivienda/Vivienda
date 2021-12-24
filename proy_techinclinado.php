@@ -239,7 +239,6 @@ guardar_elemento('proy_desc', $row_proy_cod['proy_desc']);
 // Longitud de paredes externas **
 guardar_elemento('peo_long', $_POST['xpeo_long']);
 guardar_elemento('pns_long', $_POST['xpns_long']);
-// Componente Constructivo
 guardar_elemento("id" ,$_POST['xproy_cod_incl']);
 $cod_incl = $_SESSION['cod_proy'];
 $sql_proy_cod = mysqli_query($con, "SELECT * FROM proy_proyecto where proy_cod='$cod_incl'");
@@ -251,8 +250,20 @@ registrar_pared('ps', $con);
 registrar_pared('po', $con);
 registrar_pared('pe', $con);
 registrar_pared('pi', $con);
+
 guardar_elemento('piy', $_POST['xpiy']); // Posicion Pared Norte - Sur
 guardar_elemento('pix', $_POST['xpix']); // Posicion Pared Este - Oeste
+if ($piy > 0 ) {
+    guardar_elemento("PINS", True);
+    guardar_elemento("PIEO", False);
+
+} elseif ($pix > 0) {
+    guardar_elemento("PIEO", True);
+    guardar_elemento("PINS", False);
+} else {
+    guardar_elemento("PINS", False);
+    guardar_elemento("PIEO", False);
+}
 // Construcción Techo
 registrar_techo($con);
 

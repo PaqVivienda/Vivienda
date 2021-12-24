@@ -1,6 +1,7 @@
 <?PHP
 
 session_start();
+include('conexion.php');
 // Verificamos la Entrada por la Intranet
 $password = $_SESSION['password'];
 if ($password != "")
@@ -383,7 +384,7 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
   $xnodo_k = $_SESSION['nodo_k'];
   // ************************************************
   // Conectamos con las Tablas
-include('conexion.php');
+
 $sql_pn_cap = "SELECT * FROM proy_matcomp where proy_cod_comp = '$pn_modelo'";
 $sql_ps_cap = "SELECT * FROM proy_matcomp where proy_cod_comp = '$ps_modelo'";
 $sql_pe_cap = "SELECT * FROM proy_matcomp where proy_cod_comp = '$pe_modelo'";

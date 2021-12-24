@@ -14,7 +14,7 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
 // FIN DE LA SOLICITUD
 // Conectamos Con la base de Datos
 include("conexion.php");
-$res_consulta = mysqli_query('SELECT * FROM dg_usuario');
+$res_consulta = mysqli_query($con, 'SELECT * FROM dg_usuario');
 $row_consulta = mysqli_fetch_assoc($res_consulta);
 // FIN DE LA CONEXION A LA BASE DE DATOS
 /*

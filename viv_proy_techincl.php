@@ -75,17 +75,13 @@ $alt_yxzi = $_SESSION['alt_yxz1'];
 $alt_yxzj = $_SESSION['alt_yxz2'];
 $alt_yxzk = $_SESSION['alt_yxz3'];
 
-
-if ($_SESSION['alt_yz'] != "" ) {
-  $pnsalt  = $_SESSION['alt_yz'];
-} else {
-  $pnsalt = $_SESSION['alt_xz'];
-}
 // Fin Construcción de Paredes
 //*******************************************
 // Construcción Pared Interna
 $pi_y = $_SESSION['piy'];
 $pi_x = $_SESSION['pix'];
+$PINS = $_SESSION["PINS"];
+$PIEO = $_SESSION["PIEO"];
 
 if ( $pi_y > 0 ) {
   $pi_desc = "Norte - Sur";
@@ -151,7 +147,7 @@ $pe_ventana = $_SESSION['pe_ventana'];
 $ps_ventana = $_SESSION['ps_ventana'];
 //******************************************
 // Pared Norte
-$pn_altura = $_SESSION['pnseo_alt'];
+// $pn_altura = $_SESSION['pnseo_alt'];
 $pn_long = $_SESSION['pns_long'];
 //*****
 $pn_par_desc = $_SESSION['pn_par_desc'];
@@ -178,7 +174,7 @@ $pn_vent_calor = $_SESSION['pn_vent_calor'];
 // $pn_recub_cond = $_SESSION['pn_recub_cond'];
 // $pn_recub_calor = $_SESSION['pn_recub_calor'];
 // Pared Oeste
-$po_altura = $_SESSION['pnseo_alt'];
+// $po_altura = $_SESSION['pnseo_alt'];
 $po_long = $_SESSION['peo_long'];
 //*****
 $po_par_desc = $_SESSION['po_par_desc'];
@@ -205,7 +201,7 @@ $po_vent_calor = $_SESSION['po_vent_calor'];
 // $po_recub_cond = $_SESSION['po_recub_cond'];
 // $po_recub_calor = $_SESSION['po_recub_calor'];
 // Pared Este
-$pe_altura = $_SESSION['pnseo_alt'];
+// $pe_altura = $_SESSION['pnseo_alt'];
 $pe_long = $_SESSION['peo_long'];
 //******
 $pe_par_desc = $_SESSION['pe_par_desc'];
@@ -232,7 +228,7 @@ $pe_vent_calor = $_SESSION['pe_vent_calor'];
 // $pe_recub_cond = $_SESSION['pe_recub_cond'];
 // $pe_recub_calor = $_SESSION['pe_recub_calor'];
 // Pared Sur ******
-$ps_altura = $_SESSION['pnseo_alt'];
+// $ps_altura = $_SESSION['pnseo_alt'];
 $ps_long = $_SESSION['pns_long'];
 //*****
 $ps_par_desc = $_SESSION['ps_par_desc'];
@@ -608,29 +604,33 @@ echo '			</tr>';
 echo '			<tr><td colspan="9"><hr size="5" with="100%" style="color:#a62d2d;" /></hr></td></tr>';
 echo '			<tr>'; // Dimensiones de la Pared Interna **************************************************************
 $res_pi = mysqli_query($con, $sql_pi_cap);
-while ($row_pi = mysqli_fetch_array($res_pi, MYSQLI_ASSOC)){
-  echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$pi_desc.'</i></b></font></td>';
-  if ($pi_desc == "Norte - Sur" ) {
-    echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$peo_lomg.'</i></b></font></td>';
-  } elseif ($pi_desc == "Este - Oeste" ) {
-    echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$pns_long.'</i></b></font></td>';
+if ($PINS or $PIEO) { 
+  while ($row_pi = mysqli_fetch_array($res_pi, MYSQLI_ASSOC)){
+    echo '			  <td align="left"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$pi_desc.'</i></b></font></td>';
+    if (isset($pi_desc)) {
+      if ($pi_desc == "Norte - Sur" ) {
+        echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$peo_lomg.'</i></b></font></td>';
+      } elseif ($pi_desc == "Este - Oeste" ) {
+        echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$pns_long.'</i></b></font></td>';
+      }
+    }
+    
+    if ( $tip_techo == "dato1" ) {
+      echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$alt_yxzi.'</i></b></font></td>';
+    } elseif ($tip_techo == "dato2" ) {
+      echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$alt_yxzi.'</i></b></font></td>';
+    } elseif ( $tip_techo == "dato3" ) {
+      echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$alt_yxzk.'</i></b></font></td>';
+    }
+    
+    echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$pi_sep.'</i></b></font></td>';
+    echo '<td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_desc_capa'].'</b></font></td>';
+    echo '<td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_espesor'].'</b></font></td>';
+    echo '<td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_densidad'].'</b></font></td>';
+    echo '<td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_conductividad'].'</b></font></td>';
+    echo '<td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_calorespecifico'].'</b></font></td>';
+    echo '</tr>';
   }
-  
-  if ( $tip_techo == "dato1" ) {
-    echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$alt_yxzi.'</i></b></font></td>';
-  } elseif ($tip_techo == "dato2" ) {
-    echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$alt_yxzi.'</i></b></font></td>';
-  } elseif ( $tip_techo == "dato3" ) {
-    echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$alt_yxzk.'</i></b></font></td>';
-  }
-  
-  echo '			  <td align="center"><font face="Comic Sans MS,arial,verdana", size="+1", color="#a62d2d"><b><i>'.$pi_sep.'</i></b></font></td>';
-  echo '<td align="left"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_desc_capa'].'</b></font></td>';
-  echo '<td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_espesor'].'</b></font></td>';
-  echo '<td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_densidad'].'</b></font></td>';
-  echo '<td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_conductividad'].'</b></font></td>';
-  echo '<td align="center"><font face="Comic Sans MS,arial,verdana", size="3", color="#a62d2d"><b>'.$row_pi['proy_calorespecifico'].'</b></font></td>';
-  echo '</tr>';
 }
 echo '		</table>';
 // Fin de Construcción de Pared Interna **************************

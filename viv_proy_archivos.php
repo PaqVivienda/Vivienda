@@ -23,6 +23,7 @@ define("dens_piso" ,"1.21752E+03");
 define("cond_aire", "2.60000E-02");
 define("cp_aire", "1.06300E+00");
 define("dens_aire", "1.22300E+00");
+$cm_hlocal_hsolar = $_SESSION['hlocal_hsolar'];
 
 foreach ($_SESSION as $key => $value) {
     $GLOBALS[$key] = $value;
@@ -236,9 +237,9 @@ if($_SESSION["t_cond"] == "ADMINISTRADOR") {
 
 //*****************************************
 // Construcción de Paredes (Altura) ***************************
-$humrelat = $_POST['xhumrel'];
-$cambaire = $_POST['xcambioaire'];
-$xpasot = $_POST['xpasot'];
+$humrelat = $_SESSION['humrel'];
+$cambaire = $_SESSION['cmboaire'];
+$xpasot = $_SESSION['pasot'];
 $humrel = $humrelat / 100;
 
 $monit = $_SESSION['monitoreo'];

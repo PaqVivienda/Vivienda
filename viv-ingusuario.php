@@ -169,6 +169,10 @@ echo '			  	<select name="condicion" type="text" size="1">
 echo '			  </td>';
 echo '			</tr>';
 echo '			<tr>';
+echo '          <td><font face="Comic Sans MS,arial,verdana", size="3", color="#5B0000">Correo</font>';
+echo '          <input type="email" name="email"></td>';
+echo '          </tr>';
+echo '			<tr>';
 echo '			  <td><p>&nbsp;</p></td>';
 echo '			</tr>';
 echo '			  <td align="center"><input name="submit" type="submit" value="Enviar Datos" class="btn"/></td>';
@@ -209,5 +213,4 @@ echo '<Script language=JavaScript>'.
 	 'window.onmousedown=right;'.
 	 '</script>';
 echo '</html>';
-mysqli_close($con);
 ?>
